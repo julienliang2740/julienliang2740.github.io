@@ -68,11 +68,26 @@ const contact = {
   email: 'julienliang2740@gmail.com',
 }
 
-const iHaveNoExperiences = {
-  // all the properties are optional - can be left empty or deleted
-  role: 'Work Experience',
-  description:
-    'In my latest role as an Automation Software Development co-op with Blackberry QNX, I use Python, C, and bash scripting in embedded software systems.',
-}
+// const myExperiences = {
+//   // all the properties are optional - can be left empty or deleted
+//   role: 'Work Experience',
+//   description:
+//     'In my latest role as an Automation Software Development co-op with Blackberry QNX, I use Python, C, and bash scripting in embedded software systems.',
+// }
 
-export { header, about, projects, skills, contact, iHaveNoExperiences }
+const myExperiences = [
+  {
+    date: 'May 2024 - Aug 2024',
+    role: 'Automation Software Developer',
+    company: 'Blackberry QNX',
+    description: 'Python, C, bash'
+  },
+  {
+    date: 'May 2024 - Aug 2024',
+    role: 'Automation Software Developer',
+    company: 'Blackberry QNX',
+    description: 'Python, C, bash'
+  },
+]
+
+export { header, about, projects, skills, contact, myExperiences }
