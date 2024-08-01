@@ -1,3 +1,9 @@
+import { IoHardwareChipOutline } from "react-icons/io5";
+import { RiRobot2Line } from "react-icons/ri";
+import { CgDatabase } from "react-icons/cg";
+
+import { BlackberryIcon } from "./assets";
+
 const header = {
   // all the properties are optional - can be left empty or deleted
   homepage: 'https://julienliang.com/',
@@ -78,15 +84,24 @@ const contact = {
 const myExperiences = [
   {
     date: 'May 2024 - Aug 2024',
+    icon: IoHardwareChipOutline,
     role: 'Automation Software Developer',
     company: 'Blackberry QNX',
     description: 'Python, C, bash'
   },
   {
-    date: 'May 2024 - Aug 2024',
-    role: 'Automation Software Developer',
-    company: 'Blackberry QNX',
-    description: 'Python, C, bash'
+    date: 'Sep 2023 - Apr 2024',
+    icon: RiRobot2Line,
+    role: 'Software Designer',
+    company: 'UWaterloo BioMechatronics (EMG Fabric)',
+    description: 'C++, Python, ESP32'
+  },
+  {
+    date: 'May 2023 - Aug 2023',
+    icon: CgDatabase,
+    role: 'Software Developer',
+    company: 'Bayou Technology Co',
+    description: 'Python, C++, Whisper AI'
   },
 ]
 

@@ -3,9 +3,9 @@ import React from 'react';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import { FaBriefcase } from 'react-icons/fa';
+
 import { myExperiences } from '../../portfolio';
 import './Experiences.css';
-// import './TimelinComponent.css';
 
 const Experiences = () => {
   if (!myExperiences || myExperiences.length === 0) return null;
@@ -19,14 +19,16 @@ const Experiences = () => {
             key={experience.id || index}
             className="vertical-timeline-element--work"
             date={experience.date}
-            icon={<FaBriefcase />}
+            // icon={<img src={experience.icon} alt={experience.company} className='company-image'/>}
+            icon={<experience.icon />}
           >
             <h3 className="experiences__timeline__role">{experience.role}</h3>
             <h4 className="experiences__timeline__company">{experience.company}</h4>
             <p>{experience.description}</p>
           </VerticalTimelineElement>
         ))}
-    <VerticalTimelineElement
+    <VerticalTimelineElement 
+      icon={<FaBriefcase />}
       />
       </VerticalTimeline>
     </div>
