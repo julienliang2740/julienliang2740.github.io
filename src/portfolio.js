@@ -12,10 +12,10 @@ const header = {
 
 const about = {
   // all the properties are optional - can be left empty or deleted
-  name: 'Julien Liang',
-  role: 'University of Waterloo Computer Science student',
+  name: 'Julien',
+  role: 'Welcome to my website :)',
   description:
-    'Hi, I\'m Julien Liang. \n I\'m a Computer Science Student at the University of Waterloo passionate about technology, programming, and solving real-world problems. \n Outside of programming, I enjoy reading world history, practicing martial arts, and watching Boonie Bears the TV show. \n In my latest role as an Automation Software Development co-op with Blackberry QNX, I use Python, C, and bash scripting in embedded software systems.',
+    'I am a Computer Science Student at the University of Waterloo passionate about technology, software, and solving real-world problems. \n Outside of programming, I enjoy reading world history, building lego, and watching Boonie Bears the TV show. \n In my latest role I am an Automation Software Developer with Blackberry QNX.',
   social: {
     linkedin: 'https://www.linkedin.com/in/julien-liang/',
     github: 'https://github.com/julienliang2740',
@@ -44,7 +44,7 @@ const projects = [
   {
     name: 'TrashTracker',
     description:
-      'A web application that crowdsources trash location data for waste tracking and management. A winner of SET.Hacks() 2021.',
+      'A web application that crowdsources trash location data on a live satellite map for waste tracking and management. A winner of SET.Hacks() 2021.',
      stack: ['Python', 'Javascript', 'Django'],
     // sourceCode: 'https://github.com',
     livePreview: 'https://devpost.com/software/trash-tracker-wkm67j',
@@ -59,7 +59,7 @@ const skills = [
   'C++',
   'C',
   'C#',
-  'Javascript',
+  'JavaScript',
   'React',
   'SQL',
   'Bash',
