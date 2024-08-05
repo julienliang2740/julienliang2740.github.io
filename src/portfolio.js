@@ -34,6 +34,14 @@ const projects = [
     livePreview: 'https://drive.google.com/drive/u/0/folders/14lYc-cVJFHQq8ZpaYwwZhGCi8xUGKjlo',
   },
   {
+    name: 'TuneScriber',
+    description:
+      'A web application that transforms music files into separate tracks and sheet music scores in pdf format based on instrumentation.',
+     stack: ['Python', 'React', 'Basic-Pitch', 'Whisper AI', 'Aceternity UI'],
+    // sourceCode: 'https://github.com',
+    livePreview: 'https://devpost.com/software/melodymapper',
+  },
+  {
     name: 'Sorcery',
     description:
       'A card/board game with a terminal and graphical display made entirely in C++. Gameplay is similar to Hearthstone and Magic, the Gathering.',
