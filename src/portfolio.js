@@ -6,7 +6,7 @@ import { BlackberryIcon } from "./assets";
 
 const header = {
   // all the properties are optional - can be left empty or deleted
-  homepage: 'https://julienliang.com/',
+  homepage: 'https://julienliang.xyz/',
   title: 'JL.',
 }
 
