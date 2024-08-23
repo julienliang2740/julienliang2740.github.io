@@ -15,7 +15,7 @@ const about = {
   name: 'Julien',
   role: 'Welcome to my website :)',
   description:
-    'I am a Computer Science Student at the University of Waterloo passionate about technology, software, and solving real-world problems. \n Outside of programming, I enjoy reading world history, building lego, and watching Boonie Bears the TV show. \n In my latest role I am an Automation Software Developer with Blackberry QNX.',
+    'I am a Computer Science Student at the University of Waterloo passionate about technology, software, and solving real-world problems. \n Outside of programming, I enjoy reading world history, building lego, and watching Boonie Bears the TV show. \n In my most recent role I was an Automation Software Developer at Blackberry QNX.',
   social: {
     linkedin: 'https://www.linkedin.com/in/julien-liang/',
     github: 'https://github.com/julienliang2740',
