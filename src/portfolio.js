@@ -1,5 +1,7 @@
-import { IoHardwareChipOutline } from "react-icons/io5";
+import { FaTruckPickup } from "react-icons/fa";
 import { RiRobot2Line } from "react-icons/ri";
+import { IoHardwareChipOutline } from "react-icons/io5";
+import { GiTechnoHeart } from "react-icons/gi";
 import { CgDatabase } from "react-icons/cg";
 
 import { BlackberryIcon } from "./assets";
@@ -15,7 +17,7 @@ const about = {
   name: 'Julien',
   role: 'Welcome to my website :)',
   description:
-    'I am a Computer Science Student at the University of Waterloo passionate about technology, software, and solving real-world problems. \n Outside of programming, I enjoy reading world history, building lego, and watching Boonie Bears the TV show. \n In my most recent role I was an Automation Software Developer at Blackberry QNX.',
+    'I am a Computer Science Student at the University of Waterloo passionate about technology, software, and solving real-world problems. \n Outside of programming, I enjoy reading world history, building lego, and watching Boonie Bears the TV show. \n In my current role I am a Software Developer at Ford Motor Company.',
   social: {
     linkedin: 'https://www.linkedin.com/in/julien-liang/',
     github: 'https://github.com/julienliang2740',
@@ -91,15 +93,29 @@ const contact = {
 
 const myExperiences = [
   {
+    date: 'Jan 2025 - Present',
+    icon: FaTruckPickup,
+    role: 'Software Developer',
+    company: 'Ford Motor Company',
+    description: 'C++, C'
+  },
+  {
+    date: 'Sept 2023 - Present',
+    icon: RiRobot2Line,
+    role: 'LLM Developer',
+    company: 'University of Toronto Machine Intelligence Team',
+    description: 'Python, LLM'
+  },
+  {
     date: 'May 2024 - Aug 2024',
     icon: IoHardwareChipOutline,
-    role: 'Automation Software Developer',
+    role: 'Software Developer',
     company: 'Blackberry QNX',
-    description: 'Python, C, bash'
+    description: 'Python, C++, C, bash'
   },
   {
     date: 'Sep 2023 - Apr 2024',
-    icon: RiRobot2Line,
+    icon: GiTechnoHeart,
     role: 'Software Designer',
     company: 'UWaterloo BioMechatronics (EMG Fabric)',
     description: 'C++, Python, ESP32'
