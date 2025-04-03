@@ -59,7 +59,6 @@ const projects = [
     // sourceCode: 'https://github.com',
     livePreview: 'https://devpost.com/software/trash-tracker-wkm67j',
   },
-
 ]
 
 const skills = [
@@ -75,7 +74,7 @@ const skills = [
   'Bash',
   'Linux',
   'Git',
-  'LLM Research',
+  'AI Engineering',
   'Embedded Software',
 ]
 
@@ -111,7 +110,7 @@ const myExperiences = [
     icon: IoHardwareChipOutline,
     role: 'Software Developer',
     company: 'Blackberry QNX',
-    description: 'Python, C++, C, bash'
+    description: 'C, Python, Bash'
   },
   {
     date: 'Sep 2023 - Apr 2024',
@@ -125,7 +124,7 @@ const myExperiences = [
     icon: CgDatabase,
     role: 'Software Developer',
     company: 'Bayou Technology Co',
-    description: 'Python, C++, Whisper AI'
+    description: 'Python, C++, Bash'
   },
 ]
 
