@@ -1,4 +1,5 @@
-import { FaTruckPickup } from "react-icons/fa";
+import { BsRouter } from "react-icons/bs";
+import { FaTree, FaTruckPickup } from "react-icons/fa";
 import { RiRobot2Line } from "react-icons/ri";
 import { IoHardwareChipOutline } from "react-icons/io5";
 import { GiTechnoHeart } from "react-icons/gi";
@@ -17,7 +18,7 @@ const about = {
   name: 'Julien',
   role: 'Welcome to my website :)',
   description:
-    'I am a Computer Science Student at the University of Waterloo passionate about technology, software, and solving real-world problems. \n Outside of programming, I enjoy reading world history, building lego, and watching Boonie Bears the TV show. \n In my current role I am a Software Developer at Ford Motor Company.',
+    'I am a Computer Science Student at the University of Waterloo passionate about technology, software, and solving real-world problems. Outside of programming, I enjoy reading world history, building lego, and watching Boonie Bears the TV show. In my current role I am a Software Engineer at Cisco.',
   social: {
     linkedin: 'https://www.linkedin.com/in/julien-liang/',
     github: 'https://github.com/julienliang2740',
@@ -83,14 +84,28 @@ const contact = {
   email: 'julienliang2740@gmail.com',
 }
 
-// const myExperiences = {
-//   // all the properties are optional - can be left empty or deleted
-//   role: 'Work Experience',
-//   description:
-//     'In my latest role as an Automation Software Development co-op with Blackberry QNX, I use Python, C, and bash scripting in embedded software systems.',
-// }
-
+  // {
+  //   date: ' - ',
+  //   icon: ,
+  //   role: '',
+  //   company: '',
+  //   description: ''
+  // },
 const myExperiences = [
+  {
+    date: 'May 2025 - Present',
+    icon: BsRouter,
+    role: 'Software Engineer',
+    company: 'Cisco Systems',
+    description: 'C, C++'
+  },
+  {
+    date: 'Feb 2025 - Present',
+    icon: FaTree,
+    role: 'ML Research Assistant',
+    company: 'Stanford University',
+    description: 'Python'
+  },
   {
     date: 'Jan 2025 - Present',
     icon: FaTruckPickup,
