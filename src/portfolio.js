@@ -107,14 +107,14 @@ const myExperiences = [
     description: 'Python'
   },
   {
-    date: 'Jan 2025 - Present',
+    date: 'Jan 2025 - Apr 2025',
     icon: FaTruckPickup,
     role: 'Software Developer',
     company: 'Ford Motor Company',
     description: 'C++, C'
   },
   {
-    date: 'Sept 2023 - Present',
+    date: 'Oct 2024 - Apr 2025',
     icon: RiRobot2Line,
     role: 'LLM Developer',
     company: 'University of Toronto Machine Intelligence Team',
