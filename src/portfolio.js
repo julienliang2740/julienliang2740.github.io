@@ -29,7 +29,7 @@ const projects = [
   // projects can be added an removed
   // if there are no projects, Projects section won't show up
   {
-    name: '',
+    name: 'ConfederAgent',
     description:
       'An AI powered parliament simulation to model the legislative process. Made 10x faster with asynchronous execution and fine-tuning tiny <10B models.',
      stack: ['Python', 'QLoRA', 'PyTorch'],
