@@ -29,18 +29,26 @@ const projects = [
   // projects can be added an removed
   // if there are no projects, Projects section won't show up
   {
+    name: '',
+    description:
+      'An AI powered parliament simulation to model the legislative process. Made 10x faster with asynchronous execution and fine-tuning tiny <10B models.',
+     stack: ['Python', 'QLoRA', 'PyTorch'],
+    // sourceCode: 'https://github.com',
+    livePreview: 'https://github.com/julienliang2740/ConfederAgent-Beta-Version',
+  },
+  {
     name: 'CivilizAgent',
     description:
       'A historical simulation program powered by an LLM multi-agent system, modelling both interactions between countries and internal politics.',
-     stack: ['Python', 'LLM', 'MAS'],
+     stack: ['Python', 'RAG', 'LLMs'],
     // sourceCode: 'https://github.com',
-    livePreview: 'https://drive.google.com/drive/u/0/folders/14lYc-cVJFHQq8ZpaYwwZhGCi8xUGKjlo',
+    livePreview: 'https://github.com/julienliang2740/CivilizAgent-Demo',
   },
   {
     name: 'TuneScriber',
     description:
       'A web application that transforms music files into separate tracks and sheet music scores in pdf format based on instrumentation.',
-     stack: ['Python', 'React', 'Basic-Pitch', 'Whisper AI', 'Aceternity UI'],
+     stack: ['Python', 'React', 'Flask', 'Whisper AI'],
     // sourceCode: 'https://github.com',
     livePreview: 'https://devpost.com/software/melodymapper',
   },
