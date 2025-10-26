@@ -29,6 +29,14 @@ const projects = [
   // projects can be added an removed
   // if there are no projects, Projects section won't show up
   {
+    name: 'UTMIST & Lovelytics',
+    description:
+      'An LLM-powered task automation platform with advanced prompt optimization and multi-agent systems for flexible, efficient task execution.',
+     stack: ['Python', 'JavaScript', 'TypeScript', 'HTML'],
+    // sourceCode: 'https://github.com',
+    livePreview: 'https://github.com/julienliang2740/Lovelytics',
+  },
+  {
     name: 'ConfederAgent',
     description:
       'An AI powered parliament simulation to model the legislative process. Made 10x faster with asynchronous execution and fine-tuning tiny <10B models.',
@@ -37,20 +45,20 @@ const projects = [
     livePreview: 'https://github.com/julienliang2740/ConfederAgent-Beta-Version',
   },
   {
-    name: 'CivilizAgent',
-    description:
-      'A historical simulation program powered by an LLM multi-agent system, modelling both interactions between countries and internal politics.',
-     stack: ['Python', 'RAG', 'LLMs'],
-    // sourceCode: 'https://github.com',
-    livePreview: 'https://github.com/julienliang2740/CivilizAgent-Demo',
-  },
-  {
     name: 'TuneScriber',
     description:
       'A web application that transforms music files into separate tracks and sheet music scores in pdf format based on instrumentation.',
      stack: ['Python', 'React', 'Flask', 'Whisper AI'],
     // sourceCode: 'https://github.com',
     livePreview: 'https://devpost.com/software/melodymapper',
+  },
+  {
+    name: 'CivilizAgent',
+    description:
+      'A historical simulation program powered by an LLM multi-agent system, modelling both interactions between countries and internal politics.',
+     stack: ['Python', 'RAG', 'LLMs'],
+    // sourceCode: 'https://github.com',
+    livePreview: 'https://github.com/julienliang2740/CivilizAgent-Demo',
   },
   {
     name: 'Sorcery',
@@ -76,15 +84,13 @@ const skills = [
   'Python',
   'C++',
   'C',
-  'C#',
   'JavaScript',
   'React',
+  'C#',
   'SQL',
   'Bash',
   'Linux',
-  'Git',
-  'AI Engineering',
-  'Embedded Software',
+  'Git'
 ]
 
 const contact = {
@@ -101,14 +107,14 @@ const contact = {
   // },
 const myExperiences = [
   {
-    date: 'May 2025 - Present',
+    date: 'May 2025 - Aug 2025',
     icon: BsRouter,
     role: 'Software Engineer',
     company: 'Cisco Systems',
-    description: 'C, C++'
+    description: 'C++, Python, C'
   },
   {
-    date: 'Feb 2025 - Present',
+    date: 'Feb 2025 - Jul 2025',
     icon: FaTree,
     role: 'ML Research Assistant',
     company: 'Stanford University',
@@ -119,7 +125,7 @@ const myExperiences = [
     icon: FaTruckPickup,
     role: 'Software Developer',
     company: 'Ford Motor Company',
-    description: 'C++, C'
+    description: 'C++, React, C'
   },
   {
     date: 'Oct 2024 - Apr 2025',
