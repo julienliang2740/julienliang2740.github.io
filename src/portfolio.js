@@ -29,6 +29,14 @@ const projects = [
   // projects can be added an removed
   // if there are no projects, Projects section won't show up
   {
+    name: 'PAIntPal',
+    description:
+      'An AI-powered drawing instructor that converts any image into a personalized, step-by-step art tutorial with adaptive learning for locally efficient, accessible creativity.\n(update in progress)',
+     stack: ['Python', 'React', 'PyTorch', 'QLoRA', 'Flask'],
+    // sourceCode: 'https://github.com',
+    // livePreview: 'https://github.com/julienliang2740/Lovelytics',
+  },
+  {
     name: 'UTMIST & Lovelytics',
     description:
       'An LLM-powered task automation platform with advanced prompt optimization and multi-agent systems for flexible, efficient task execution.',
@@ -39,7 +47,7 @@ const projects = [
   {
     name: 'ConfederAgent',
     description:
-      'An AI powered parliament simulation to model the legislative process. Made 10x faster with asynchronous execution and fine-tuning tiny <10B models.',
+      'An AI powered parliament simulation to model the legislative process. Made 10x faster with asyn execution and fine-tuning tiny <10B models.',
      stack: ['Python', 'QLoRA', 'PyTorch'],
     // sourceCode: 'https://github.com',
     livePreview: 'https://github.com/julienliang2740/ConfederAgent-Beta-Version',
@@ -60,14 +68,14 @@ const projects = [
     // sourceCode: 'https://github.com',
     livePreview: 'https://github.com/julienliang2740/CivilizAgent-Demo',
   },
-  {
-    name: 'Sorcery',
-    description:
-      'A card/board game with a terminal and graphical display made entirely in C++. Gameplay is similar to Hearthstone and Magic, the Gathering.',
-     stack: ['C++', 'XWindow'],
-    // sourceCode: 'https://github.com',
-    livePreview: 'https://github.com/julienliang2740/Sorcery',
-  },
+  // {
+  //   name: 'Sorcery',
+  //   description:
+  //     'A card/board game with a terminal and graphical display made entirely in C++. Gameplay is similar to Hearthstone and Magic, the Gathering.',
+  //    stack: ['C++', 'XWindow'],
+  //   // sourceCode: 'https://github.com',
+  //   livePreview: 'https://github.com/julienliang2740/Sorcery',
+  // },
   {
     name: 'TrashTracker',
     description:
