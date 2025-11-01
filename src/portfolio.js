@@ -18,7 +18,7 @@ const about = {
   name: 'Julien',
   role: 'Welcome to my website :)',
   description:
-    'I am a Computer Science Student at the University of Waterloo passionate about technology, software, and solving real-world problems. Outside of programming, I enjoy reading world history, building lego, and watching Boonie Bears the TV show. In my current role I am a Software Engineer at Cisco.',
+    'I am a Computer Science Student at the University of Waterloo passionate about technology, software, and solving real-world problems. Outside of programming, I enjoy reading world history, building lego, and watching Boonie Bears the TV show. In my most recent role I was a Software Engineer at Cisco.',
   social: {
     linkedin: 'https://www.linkedin.com/in/julien-liang/',
     github: 'https://github.com/julienliang2740',
@@ -31,7 +31,7 @@ const projects = [
   {
     name: 'PAIntPal',
     description:
-      'An AI-powered drawing instructor that converts any image into a personalized, step-by-step art tutorial with adaptive learning for locally efficient, accessible creativity.\n(update in progress)',
+      'An AI-powered drawing instructor that converts any image into a personalized, step-by-step art tutorial with adaptive learning for local and accessible creativity. (speech update in progress)',
      stack: ['Python', 'React', 'PyTorch', 'QLoRA', 'Flask'],
     // sourceCode: 'https://github.com',
     // livePreview: 'https://github.com/julienliang2740/Lovelytics',
