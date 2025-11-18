@@ -47,7 +47,7 @@ const projects = [
   {
     name: 'ConfederAgent',
     description:
-      'An AI powered parliament simulation to model the legislative process. Made 10x faster with asyn execution and fine-tuning tiny <10B models.',
+      'An AI powered parliament simulation to model the legislative process. Made 10x faster by async execution and fine-tuning tiny <10B models.',
      stack: ['Python', 'QLoRA', 'PyTorch'],
     // sourceCode: 'https://github.com',
     livePreview: 'https://github.com/julienliang2740/ConfederAgent-Beta-Version',
