@@ -90,15 +90,19 @@ const skills = [
   // skills can be added or removed
   // if there are no skills, Skills section won't show up
   'Python',
+  'Java',
   'C++',
   'C',
   'JavaScript',
   'React',
   'C#',
   'SQL',
-  'Bash',
+  'AWS',
+  'Docker',
+  'Kubernetes',
+  'Git',
   'Linux',
-  'Git'
+  'MySQL'
 ]
 
 const contact = {
@@ -119,7 +123,7 @@ const myExperiences = [
     icon: BsRouter,
     role: 'Software Engineer',
     company: 'Cisco Systems',
-    description: 'C++, Python, C'
+    description: 'Java, Python, C++'
   },
   {
     date: 'Feb 2025 - Jul 2025',
@@ -133,21 +137,21 @@ const myExperiences = [
     icon: FaTruckPickup,
     role: 'Software Developer',
     company: 'Ford Motor Company',
-    description: 'C++, React, C'
+    description: 'C++, Python, React'
   },
   {
     date: 'Oct 2024 - Apr 2025',
     icon: RiRobot2Line,
     role: 'LLM Developer',
     company: 'University of Toronto Machine Intelligence Team',
-    description: 'Python, LLM'
+    description: 'Python'
   },
   {
     date: 'May 2024 - Aug 2024',
     icon: IoHardwareChipOutline,
     role: 'Software Developer',
     company: 'Blackberry QNX',
-    description: 'C, Python, Bash'
+    description: 'C, C++, Python'
   },
   {
     date: 'Sep 2023 - Apr 2024',
