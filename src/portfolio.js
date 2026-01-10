@@ -17,8 +17,24 @@ const about = {
   // all the properties are optional - can be left empty or deleted
   name: 'Julien',
   role: 'Welcome to my website :)',
-  description:
-    'I am a Computer Science Student at the University of Waterloo passionate about technology, software, and solving real-world problems. Outside of programming, I enjoy reading world history, building lego, and watching Boonie Bears the TV show. In my most recent role I was a Software Engineer at Cisco.',
+  description: (
+    <>
+      I am a Computer Science Student at the University of Waterloo passionate
+      about technology, software, and solving real-world problems. Outside of
+      programming, I enjoy reading world history, building lego, and playing
+      PolyTopia. In my most recent role I was a Software Engineer at Cisco.{' '}
+      Check out the{' '}
+      <a
+        className='link'
+        href='https://polyterminator.com'
+        target='_blank'
+        rel='noreferrer'
+      >
+        PolyTerminal
+      </a>
+      , made by Polytopia players for Polytopia players!
+    </>
+  ),
   social: {
     linkedin: 'https://www.linkedin.com/in/julien-liang/',
     github: 'https://github.com/julienliang2740',
@@ -28,6 +44,13 @@ const about = {
 const projects = [
   // projects can be added an removed
   // if there are no projects, Projects section won't show up
+  {
+    name: 'PolyTerminal',
+    description:
+      'Data Visualization Platform for Polytopia players, providing in-depth game statistics and analysis through interactive charts and graphs.',
+     stack: ['React', 'Java', 'MySQL', 'Spring Boot'],
+    livePreview: 'https://github.com/julienliang2740/Polytopia-Terminal'
+  },
   {
     name: 'PAIntPal',
     description:
@@ -76,14 +99,14 @@ const projects = [
   //   // sourceCode: 'https://github.com',
   //   livePreview: 'https://github.com/julienliang2740/Sorcery',
   // },
-  {
-    name: 'TrashTracker',
-    description:
-      'A web application that crowdsources trash location data on a live satellite map for waste tracking and management. A winner of SET.Hacks() 2021.',
-     stack: ['Python', 'Javascript', 'Django'],
-    // sourceCode: 'https://github.com',
-    livePreview: 'https://devpost.com/software/trash-tracker-wkm67j',
-  },
+  // {
+  //   name: 'TrashTracker',
+  //   description:
+  //     'A web application that crowdsources trash location data on a live satellite map for waste tracking and management. A winner of SET.Hacks() 2021.',
+  //    stack: ['Python', 'Javascript', 'Django'],
+  //   // sourceCode: 'https://github.com',
+  //   livePreview: 'https://devpost.com/software/trash-tracker-wkm67j',
+  // },
 ]
 
 const skills = [
