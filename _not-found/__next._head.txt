@@ -1,8 +1,8 @@
 1:"$Sreact.fragment"
-2:I[44888,["/_next/static/chunks/7decbea6ac55cd5e.js","/_next/static/chunks/8ac6199c5740fbb9.js"],"ViewportBoundary"]
-4:I[44888,["/_next/static/chunks/7decbea6ac55cd5e.js","/_next/static/chunks/8ac6199c5740fbb9.js"],"MetadataBoundary"]
+2:I[97367,["/_next/static/chunks/f370eb29a5ed165b.js","/_next/static/chunks/247eb132b7f7b574.js"],"ViewportBoundary"]
+4:I[97367,["/_next/static/chunks/f370eb29a5ed165b.js","/_next/static/chunks/247eb132b7f7b574.js"],"MetadataBoundary"]
 5:"$Sreact.suspense"
-7:I[71236,["/_next/static/chunks/7decbea6ac55cd5e.js","/_next/static/chunks/8ac6199c5740fbb9.js"],"IconMark"]
-0:{"buildId":"hk27KHnYOI_mTgHQNAIsA","rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":"$@3"}],["$","div",null,{"hidden":true,"children":["$","$L4",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":"$@6"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}
+7:I[27201,["/_next/static/chunks/f370eb29a5ed165b.js","/_next/static/chunks/247eb132b7f7b574.js"],"IconMark"]
+0:{"buildId":"bBsB1j1UyLpMosUe0T7xK","rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":"$@3"}],["$","div",null,{"hidden":true,"children":["$","$L4",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":"$@6"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}
 3:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
 6:[["$","title","0",{"children":"Julien Liang"}],["$","meta","1",{"name":"description","content":"Personal portfolio"}],["$","link","2",{"rel":"shortcut icon","href":"/JL_logo_custom.ico"}],["$","link","3",{"rel":"icon","href":"/JL_logo_custom.ico"}],["$","$L7","4",{}]]
