@@ -177,8 +177,9 @@ export default function Home() {
 
             <p>
               Beyond software, I'm deeply passionate about history. I've read everything from
-              recent works such as <em>1587, a Year of No Significance (万历十五年)</em> { " " }
-              to 12th-century writings like <em>Ten Essays on Defence (美芹十论)</em>.
+              recent works such as <em>1587, a Year of No Significance</em> { " " }
+              to 12th-century writings like <em>Ten Essays on Defence</em>.
+              {/* (美芹十论) */}
             </p>
 
 

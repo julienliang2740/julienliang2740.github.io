@@ -163,10 +163,10 @@ export default function BlogPostTemplate() {
 
         <p className={paragraphCls}>It’s not about being lucky.</p>
         <p className={paragraphCls}>It’s about pre-selecting favorable battles.</p>
-
+{/* 
         <p className={paragraphCls}>As Sun Tzu wrote:</p>
-        <p className={paragraphCls}>胜兵先胜而后求战，败兵先战而后求胜</p>
-        <p className={paragraphCls}>“The victorious army wins first and then seeks battle.”</p>
+        <p className={paragraphCls}>胜兵先胜而后求战，败兵先战而后求胜</p> */}
+        <p className={paragraphCls}>The victorious army wins first and then seeks battle.</p>
 
         <p className={paragraphCls}>PolyTerminal helps you win before the match even starts.</p>
       </section>
