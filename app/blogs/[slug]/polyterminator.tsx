@@ -29,13 +29,20 @@ const HeroVisual: React.FC = () => {
         <span className="text-sm text-neutral-500">[Your image / SVG / animation here]</span>
       </div> */}
 
-      <Image
-        src="/polyterminal.png"
-        alt="PolyTerminal preview"
-        width={900}
-        height={500}
-        className="w-[min(80vw,900px)] h-auto rounded-xl shadow-md"
-      />
+      <a
+        href="https://polyterminator.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block"
+      >
+        <Image
+          src="/polyterminal.png"
+          alt="PolyTerminal preview"
+          width={900}
+          height={500}
+          className="w-[min(80vw,900px)] h-auto rounded-xl shadow-md hover:opacity-90 transition-opacity cursor-pointer"
+        />
+      </a>
     </div>
   );
 };
@@ -222,7 +229,7 @@ export default function BlogPostTemplate() {
           So I’m actively experimenting with lightweight pipelines for ingestion and extraction.
         </p>
 
-        <h3 className={h3Cls}>2 - Go beyond metadata</h3>
+        <h3 className={h3Cls}>2. Go beyond metadata</h3>
 
         <p className={paragraphCls}>The next frontier is analyzing the match itself.</p>
 
