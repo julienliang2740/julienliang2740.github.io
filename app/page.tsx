@@ -90,7 +90,7 @@ export default function Home() {
                       PolyTerminal
                     </a>
                   </strong>
-                , an AI-powered strategy, predictions, and data visualization platform for Polytopia PVP players.
+                , an AI-powered strategy, predictions, and data visualization platform for Polytopia PvP players.
 
               </p>
 
