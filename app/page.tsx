@@ -52,7 +52,7 @@ const projects = [
     description:
       "An AI-powered parliament simulation to model the legislative process. Made 10x faster by async execution and fine-tuning tiny <10B models.",
     href: "https://github.com/julienliang2740/ConfederAgent-Beta-Version",
-    imageSrc: "/confederagent.jpg",
+    imageSrc: "/confederagent.png",
     imageAlt: "Multi-agent simulation project preview",
     tech: ["Python", "QLoRA", "PyTorch"],
   },
