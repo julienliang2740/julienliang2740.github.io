@@ -97,7 +97,7 @@ export default function Home() {
                     >
                       AI marketing platforms
                     </a>
-                  </strong>
+                  </strong> to 
                   { " " }
                   <strong>
                     <a
