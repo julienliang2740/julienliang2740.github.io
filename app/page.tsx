@@ -77,8 +77,7 @@ export default function Home() {
 
             <div className="space-y-4">
               <p>
-                Recently, I was a software engineer at <strong>Cisco</strong>, where I built a simulation platform and integrated agentic services 
-                to automate configurations for hundreds of complex router workflows. 
+                I am currently a software engineer at <strong>Cloudflare</strong>, where I'm on the Cloudflare One Gateway Team building protocol-level security solutions for MCP filtering and protection. 
                 Outside of work, I&apos;m the creator of { " " }
                   <strong>
                     <a
@@ -113,13 +112,16 @@ export default function Home() {
                 </summary>
                 <ul className="list-disc list-inside space-y-1 ml-6 mt-2">
                   <li>
+                    <strong>Cloudflare</strong> — SWE, Cloudflare One Gateway + MCP Filtering (Summer 2026)
+                  </li>
+                  <li>
                     <strong>Cisco</strong> — SWE, IOS XR Simulation Platforms + Agentic Services (Summer 2025)
                   </li>
                   <li>
-                    <strong>Ford</strong> — SDE, IPC/HMI (Winter 2025)
+                    <strong>Ford</strong> — SWE, IPC/HMI (Winter 2025)
                   </li>
                   <li>
-                    <strong>Blackberry QNX</strong> — SDE, RTOS File System (Summer 2024)
+                    <strong>Blackberry QNX</strong> — SWE, RTOS File System (Summer 2024)
                   </li>
                 </ul>
               </details>
@@ -170,9 +172,9 @@ export default function Home() {
 
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li>Backend application systems</li>
+              <li>Agentic Services and Applied AI</li>
               <li>Data platforms and analytics</li>
               <li>Distributed systems</li>
-              <li>Agentic Services and Applied AI</li>
             </ul>
 
             <p>
