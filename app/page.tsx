@@ -3,6 +3,15 @@ import { Navbar } from "@/components/navbar";
 
 const projects = [
   {
+    title: "Sekoa AI",
+    description:
+      "AI-Native Marketing Agency with 30+ business users.",
+    href: "https://sekoa.ai/",
+    imageSrc: "/sekoa.png",
+    imageAlt: "Sekoa AI project preview",
+    tech: ["Python", "TypeScript", "Supabase", "Cloudflare R2"],
+  },
+  {
     title: "PolyTerminal",
     description:
       "A PvP strategy, predictions, and data visualization platform for Polytopia players to optimize game performance.",
@@ -66,19 +75,19 @@ export default function Home() {
               priority
             />
             <h1 className="text-3xl md:text-4xl leading-tight">
-              I&apos;m Julien - a software engineer who builds systems and makes things happen
+              I&apos;m Julien - a software engineer building systems people want
             </h1>
           </div>
 
           <div className="space-y-6 text-lg leading-relaxed">
             <p>
-              I&apos;m a <strong>Computer Science</strong> student at the University of Waterloo.
+              I&apos;m a <strong>Computer Science</strong> student at the University of Waterloo building software for both startups and enterprise-scale applications.
             </p>
 
             <div className="space-y-4">
               <p>
-                I am currently a software engineer at <strong>Cloudflare</strong>, where I'm on the Cloudflare One Gateway Team building protocol-level security solutions for MCP filtering and protection. 
-                Outside of work, I&apos;m the creator of { " " }
+                I am currently a software engineer at <strong>Cloudflare</strong> on the Cloudflare One Gateway Team building protocol-level security solutions for MCP filtering and protection. 
+                Outside of work, I&apos;m building everything from { " " } 
                   <strong>
                     <a
                       href="https://polyterminator.com/"
@@ -86,10 +95,20 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="underline hover:opacity-70 transition-opacity"
                     >
-                      PolyTerminal
+                      AI marketing platforms
                     </a>
                   </strong>
-                , an AI-powered strategy, predictions, and data visualization platform for Polytopia PvP players.
+                  { " " }
+                  <strong>
+                    <a
+                      href="https://polyterminator.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:opacity-70 transition-opacity"
+                    >
+                      game data analysis tools
+                    </a>
+                  </strong>
 
               </p>
 
@@ -147,6 +166,18 @@ export default function Home() {
                   <li>
                     <strong>
                       <a
+                        href="https://sekoa.ai/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:opacity-70 transition-opacity"
+                      >
+                        Sekoa AI
+                      </a>
+                    </strong> — AI-Native Marketing Agency with 30+ business users
+                  </li>
+                  <li>
+                    <strong>
+                      <a
                         href="https://polyterminator.com/"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -154,7 +185,7 @@ export default function Home() {
                       >
                         PolyTerminal
                       </a>
-                    </strong> — PolyTopia PvP predictions and data visualization 
+                    </strong> — PolyTopia PvP predictions and data visualization with 2000+ users
                   </li>
                   <li>
                     <strong>UofT Machine Intelligence Team</strong> — Intelligent task automation
@@ -166,7 +197,7 @@ export default function Home() {
               </details>
             </div>
 
-            <p>
+            {/* <p>
               I've built across many areas in the past, with special focus on:
             </p>
 
@@ -175,7 +206,7 @@ export default function Home() {
               <li>Agentic Services and Applied AI</li>
               <li>Data platforms and analytics</li>
               <li>Distributed systems</li>
-            </ul>
+            </ul> */}
 
             <p>
               Beyond software, I'm deeply passionate about history. I've read everything from
