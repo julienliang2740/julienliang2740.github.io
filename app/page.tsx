@@ -1,15 +1,35 @@
 import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 
-const projects = [
+type TechItem = string | { label: string; crossedOut?: boolean };
+
+type Project = {
+  title: string;
+  description: string;
+  href: string;
+  imageSrc: string;
+  imageAlt: string;
+  tech: TechItem[];
+};
+
+const projects: Project[] = [
   {
     title: "Sekoa AI",
     description:
-      "AI-Native Marketing Agency with 30+ business users.",
+      "AI-Native Marketing Agency creating UGC promotional content for business users.",
     href: "https://sekoa.ai/",
     imageSrc: "/sekoa.png",
     imageAlt: "Sekoa AI project preview",
     tech: ["Python", "TypeScript", "Supabase", "Cloudflare R2"],
+  },
+  {
+    title: "Remy",
+    description:
+      "An AI kitchen coach that takes you from random ingredients in the fridge to simple meals and grocery savings.",
+    href: "https://remy-23d.pages.dev/",
+    imageSrc: "/remy.png",
+    imageAlt: "Remy project preview",
+    tech: ["TypeScript", "Python", "MediaPipe", "Cloudflare D1 + R2"],
   },
   {
     title: "PolyTerminal",
@@ -18,7 +38,15 @@ const projects = [
     href: "https://polyterminator.com/",
     imageSrc: "/polyterminal.png",
     imageAlt: "PolyTerminal project preview",
-    tech: ["Python", "Java", "AWS", "MySQL", "Docker", "React", "JavaScript"],
+    tech: [
+      "Python",
+      "Java",
+      "AWS",
+      "MySQL",
+      "Docker",
+      "React",
+      "JavaScript",
+    ],
   },
   {
     title: "UTMIST & Lovelytics",
@@ -81,16 +109,16 @@ export default function Home() {
 
           <div className="space-y-6 text-lg leading-relaxed">
             <p>
-              I&apos;m a <strong>Computer Science</strong> student at the University of Waterloo building software for both startups and enterprise-scale applications.
+              I&apos;m a <strong>Computer Science</strong> student at the University of Waterloo building software for startups, enterprise-scale applications, and everything in between.
             </p>
 
             <div className="space-y-4">
               <p>
-                I am currently a software engineer at <strong>Cloudflare</strong> on the Cloudflare One Gateway Team building protocol-level security solutions for MCP filtering and protection. 
-                Outside of work, I&apos;m building everything from { " " } 
+                I am currently a software engineer at <strong>Cloudflare</strong> on the Cloudflare One working on Gateway filtering for MCPs, WARP, and more. 
+                Outside of work, I&apos;ve built everything from { " " } 
                   <strong>
                     <a
-                      href="https://polyterminator.com/"
+                      href="https://sekoa.ai/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline hover:opacity-70 transition-opacity"
@@ -101,12 +129,23 @@ export default function Home() {
                   { " " }
                   <strong>
                     <a
+                      href="https://remy-23d.pages.dev/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:opacity-70 transition-opacity"
+                    >
+                      kitchen copilot agents
+                    </a>
+                  </strong> and 
+                  { " " }
+                  <strong>
+                    <a
                       href="https://polyterminator.com/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline hover:opacity-70 transition-opacity"
                     >
-                      game data analysis tools
+                      data analysis tools
                     </a>
                   </strong>
 
@@ -173,7 +212,19 @@ export default function Home() {
                       >
                         Sekoa AI
                       </a>
-                    </strong> — AI-Native Marketing Agency with 30+ business users
+                    </strong> — AI-Native Marketing Agency
+                  </li>
+                  <li>
+                    <strong>
+                      <a
+                        href="https://remy-23d.pages.dev/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:opacity-70 transition-opacity"
+                      >
+                        Remy
+                      </a>
+                    </strong> — Agentic Kitchen/Cooking Copilot
                   </li>
                   <li>
                     <strong>
@@ -185,13 +236,13 @@ export default function Home() {
                       >
                         PolyTerminal
                       </a>
-                    </strong> — PolyTopia PvP predictions and data visualization with 2000+ users
+                    </strong> — PolyTopia PvP Predictions and Data Visualization Tool
                   </li>
                   <li>
-                    <strong>UofT Machine Intelligence Team</strong> — Intelligent task automation
+                    <strong>UofT Machine Intelligence Team</strong> — Intelligent Task Automation
                   </li>
                   <li>
-                    <strong>Stanford University</strong> — Multi-agent simulations
+                    <strong>Stanford University</strong> — Multi-Agent Simulations
                   </li>
                 </ul>
               </details>
@@ -251,14 +302,25 @@ export default function Home() {
                           {project.title}
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                          {project.tech.map((tech) => (
-                            <span
-                              key={`${project.title}-${tech}`}
-                              className="rounded-md border border-current/15 bg-current/5 px-2.5 py-0.5 text-sm"
-                            >
-                              {tech}
-                            </span>
-                          ))}
+                          {project.tech.map((tech, index) => {
+                            const label =
+                              typeof tech === "string" ? tech : tech.label;
+                            const crossedOut =
+                              typeof tech !== "string" && tech.crossedOut;
+
+                            return (
+                              <span
+                                key={`${project.title}-${label}-${index}`}
+                                className={`rounded-md border border-current/15 bg-current/5 px-2.5 py-0.5 text-sm ${
+                                  crossedOut
+                                    ? "line-through decoration-2 decoration-current/70"
+                                    : ""
+                                }`}
+                              >
+                                {label}
+                              </span>
+                            );
+                          })}
                         </div>
                       </div>
 
