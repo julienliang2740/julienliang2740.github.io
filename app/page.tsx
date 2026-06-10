@@ -14,22 +14,13 @@ type Project = {
 
 const projects: Project[] = [
   {
-    title: "Sekoa AI",
-    description:
-      "AI-Native Marketing Agency creating UGC promotional content for business users.",
-    href: "https://sekoa.ai/",
-    imageSrc: "/sekoa.png",
-    imageAlt: "Sekoa AI project preview",
-    tech: ["Python", "TypeScript", "Supabase", "Cloudflare R2"],
-  },
-  {
     title: "Remy",
     description:
       "An AI kitchen coach that takes you from random ingredients in the fridge to simple meals and grocery savings.",
     href: "https://remy-23d.pages.dev/",
     imageSrc: "/remy.png",
     imageAlt: "Remy project preview",
-    tech: ["TypeScript", "Python", "MediaPipe", "Cloudflare D1 + R2"],
+    tech: ["Python", "TypeScript", "MediaPipe", "Cloudflare D1 + R2"],
   },
   {
     title: "PolyTerminal",
@@ -47,6 +38,15 @@ const projects: Project[] = [
       "React",
       "JavaScript",
     ],
+  },
+  {
+    title: "Sekoa AI",
+    description:
+      "AI-Native Marketing Agency creating UGC promotional content for business users.",
+    href: "https://sekoa.ai/",
+    imageSrc: "/sekoa.png",
+    imageAlt: "Sekoa AI project preview",
+    tech: ["Python", "TypeScript", "Supabase", "Cloudflare R2"],
   },
   {
     title: "UTMIST & Lovelytics",
