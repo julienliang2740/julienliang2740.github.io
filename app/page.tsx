@@ -114,7 +114,7 @@ export default function Home() {
 
             <div className="space-y-4">
               <p>
-                I am currently a software engineer at <strong>Cloudflare</strong> on the Cloudflare One working on Gateway filtering for MCPs, WARP, and more. 
+                I am currently a software engineer at <strong>Cloudflare</strong> building gateway filtering and routing for MCPs, WARP, and more. 
                 Outside of work, I&apos;ve built everything from { " " } 
                   <strong>
                     <a
