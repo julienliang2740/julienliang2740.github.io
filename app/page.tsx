@@ -170,7 +170,7 @@ export default function Home() {
                 </summary>
                 <ul className="list-disc list-inside space-y-1 ml-6 mt-2">
                   <li>
-                    <strong>Cloudflare</strong> — SWE, Cloudflare One Gateway + MCP Filtering (Summer 2026)
+                    <strong>Cloudflare</strong> — SWE, Gateway Routing and Filtering (Summer 2026)
                   </li>
                   <li>
                     <strong>Cisco</strong> — SWE, IOS XR Simulation Platforms + Agentic Services (Summer 2025)
