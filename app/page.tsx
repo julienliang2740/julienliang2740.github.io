@@ -17,7 +17,7 @@ const projects: Project[] = [
     title: "Remy",
     description:
       "An AI kitchen coach that takes you from random ingredients in the fridge to simple meals and grocery savings.",
-    href: "https://remy-23d.pages.dev/",
+    href: "https://github.com/julienliang2740/remy-agent-layer",
     imageSrc: "/remy.png",
     imageAlt: "Remy project preview",
     tech: ["Python", "TypeScript", "MediaPipe", "Cloudflare D1 + R2"],
