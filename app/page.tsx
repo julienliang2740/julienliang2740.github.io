@@ -49,6 +49,15 @@ const projects: Project[] = [
     tech: ["Python", "TypeScript", "Supabase", "Cloudflare R2"],
   },
   {
+    title: "Studytype",
+    description:
+      "Monkeytype for study notes.",
+    href: "https://study-type.pages.dev/",
+    imageSrc: "/study-type.png",
+    imageAlt: "Studytype project preview",
+    tech: ["TypeScript", "Cloudflare Workers", "Cloudflare R2"],
+  },
+  {
     title: "UTMIST & Lovelytics",
     description:
       "An intelligent task automation system that leverages Large Language Models (LLMs) to help business users automate complex workflows without requiring technical expertise.",
