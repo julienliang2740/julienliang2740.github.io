@@ -172,6 +172,43 @@ export default function Home() {
 
               </p>
 
+              <a
+                href="https://sparkflowlearn.pages.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/spark flex items-center gap-4 rounded-xl border border-current/20 bg-current/5 px-5 py-4 transition-colors hover:border-current/40 hover:bg-current/10"
+              >
+                <Image
+                  src="/sparkflow-logo.png"
+                  alt="Sparkflow logo"
+                  width={56}
+                  height={56}
+                  className="shrink-0 rounded-lg border border-current/10"
+                />
+                <div className="min-w-0">
+                  <span className="flex items-center gap-1.5 text-lg font-semibold">
+                    Check out Sparkflow
+                    <svg
+                      className="w-4 h-4 transition-transform duration-200 group-hover/spark:translate-x-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5 21 12l-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </span>
+                  <p className="text-sm opacity-70">
+                    A personal AI mentor that crafts interactive lessons built
+                    from scratch for each student.
+                  </p>
+                </div>
+              </a>
+
               <details className="group">
                 <summary className="cursor-pointer list-none flex items-center gap-1.5 hover:opacity-70 transition-opacity">
                   <svg
