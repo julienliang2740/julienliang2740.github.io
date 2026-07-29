@@ -124,7 +124,19 @@ export default function Home() {
             <div className="space-y-4">
               <p>
                 I am currently a software engineer at <strong>Cloudflare</strong> building gateway filtering and routing for MCPs, WARP, and more. 
-                Outside of work, I&apos;ve built everything from { " " } 
+                <br></br>
+                Outside of work I&apos;m building { " " }
+                <strong>
+                    <a
+                      href="https://sparkflowlearn.pages.dev/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:opacity-70 transition-opacity"
+                    >
+                      Sparkflow
+                    </a>
+                  </strong>, an AI mentor that crafts personalized lessons for students.
+                {/* I&apos;ve also built everything from { " " } 
                   <strong>
                     <a
                       href="https://sekoa.ai/"
@@ -156,7 +168,7 @@ export default function Home() {
                     >
                       data analysis tools
                     </a>
-                  </strong>
+                  </strong> */}
 
               </p>
 
