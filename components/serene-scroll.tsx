@@ -135,7 +135,7 @@ export function SereneScroll() {
   const bankP = easeIn(seg(p, 0.0, 0.8));
 
   return (
-    <div ref={wrapRef} data-scene className="relative h-[260svh] font-hero">
+    <div ref={wrapRef} data-scene className="relative z-10 h-[260svh] font-hero">
       {/*
         dvh, not svh: svh is the viewport height *with* mobile browser chrome
         showing. Once the URL bar hides on scroll the visible viewport grows,

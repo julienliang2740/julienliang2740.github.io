@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getAllPublishedBlogs } from "@/lib/blogs";
 import { Navbar } from "@/components/navbar";
-import { BlogScene } from "@/components/blog-scene";
+import { AmbientScene } from "@/components/ambient-scene";
 
 export default function BlogsPage() {
   const blogs = getAllPublishedBlogs();
@@ -9,7 +9,7 @@ export default function BlogsPage() {
   return (
     <main className="min-h-screen overflow-x-hidden w-full">
       <Navbar />
-      <BlogScene />
+      <AmbientScene variant="blog" />
 
       <div className="relative z-10 px-8 py-16 md:px-16 lg:px-24 pt-24 md:pt-28">
         <div className="max-w-3xl mx-auto">

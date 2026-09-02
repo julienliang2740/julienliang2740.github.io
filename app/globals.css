@@ -4,7 +4,7 @@
 
 
 :root {
-  --background: #faf9f6;
+  --background: #ece6da;
   --foreground: #1a1a1a;
 }
 
@@ -161,7 +161,7 @@ body {
   }
 }
 
-/* ---- Blog ambient backdrop -------------------------------------------- */
+/* ---- Ambient scene backdrop ------------------------------------------- */
 
 /*
  * Pinned to the LARGE viewport height and never to `vh`.
@@ -170,10 +170,9 @@ body {
  * hides on scroll, and every vh-based offset inside it recalculates with it —
  * which made the whole scene lurch mid-scroll (the willow shifted 102px the
  * moment the URL bar collapsed). `lvh` is the height with chrome hidden, so
- * this box is the same size whether the bar is showing or not, and the layers
- * inside are placed in % of that stable box. Nothing reflows while scrolling.
+ * this box is the same size whether the bar is showing or not.
  */
-.blog-scene {
+.ambient-scene {
   position: fixed;
   top: 0;
   left: 0;
@@ -185,52 +184,80 @@ body {
 }
 
 /*
- * The layers all share one 948x1659 canvas, so each one is mostly empty space
- * around its subject. They are sized and offset per layer to bring each
- * subject to the edge it belongs on rather than tiled as whole images.
+ * Each layer is mostly empty canvas around its subject, so they are sized and
+ * offset individually to bring each subject to the edge it belongs on.
  */
-.blog-scene img {
+.ambient-scene img {
   position: absolute;
   max-width: none;
   will-change: transform;
 }
 
-.blog-scene__willow {
+.ambient-scene__left {
+  animation: scene-sway 19s ease-in-out infinite;
+}
+
+.ambient-scene__right {
+  animation: scene-sway-slow 24s ease-in-out infinite;
+}
+
+.ambient-scene__far {
+  animation: scene-drift 30s ease-in-out infinite;
+}
+
+/* --- the colour painting, on the blog pages --- */
+.ambient-scene--blog .ambient-scene__left {
   width: 38vw;
   left: -5vw;
   bottom: -12%;
   opacity: calc(0.45 * var(--scene-intensity));
-  animation: blog-sway 19s ease-in-out infinite;
 }
 
-.blog-scene__blossom {
+.ambient-scene--blog .ambient-scene__right {
   width: 32vw;
   right: -3vw;
   bottom: -14%;
   opacity: calc(0.42 * var(--scene-intensity));
-  animation: blog-sway-slow 24s ease-in-out infinite;
 }
 
-.blog-scene__mountain {
+.ambient-scene--blog .ambient-scene__far {
   width: 40vw;
   left: 50%;
   margin-left: -20vw;
   top: 16%;
   opacity: calc(0.38 * var(--scene-intensity));
-  animation: blog-drift 30s ease-in-out infinite;
 }
 
-@keyframes blog-sway {
+/* --- the opening scene's ink, carried down the home page --- */
+.ambient-scene--home .ambient-scene__left {
+  width: 62vw;
+  left: -14vw;
+  bottom: -18%;
+  opacity: calc(0.3 * var(--scene-intensity));
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 96%);
+}
+
+.ambient-scene--home .ambient-scene__far {
+  width: 78vw;
+  right: -14vw;
+  left: auto;
+  margin-left: 0;
+  top: 26%;
+  opacity: calc(0.26 * var(--scene-intensity));
+  mask-image: linear-gradient(to left, #000 72%, transparent 100%);
+}
+
+@keyframes scene-sway {
   0%, 100% { transform: translate3d(-5px, 0, 0) rotate(-0.25deg); }
   50%      { transform: translate3d(5px, -4px, 0) rotate(0.25deg); }
 }
 
-@keyframes blog-sway-slow {
+@keyframes scene-sway-slow {
   0%, 100% { transform: translate3d(4px, 0, 0) rotate(0.2deg); }
   50%      { transform: translate3d(-4px, -3px, 0) rotate(-0.2deg); }
 }
 
-@keyframes blog-drift {
+@keyframes scene-drift {
   0%, 100% { transform: translate3d(8px, 0, 0); }
   50%      { transform: translate3d(-8px, -5px, 0); }
 }
@@ -240,7 +267,7 @@ body {
  * near-black page. Inverting brings the strokes back as light on dark, and the
  * hue rotation puts the greens and pinks back where they belong afterwards.
  */
-:where(.dark) .blog-scene img {
+:where(.dark) .ambient-scene img {
   filter: invert(1) hue-rotate(180deg) saturate(0.7) brightness(0.85);
 }
 
@@ -251,7 +278,7 @@ body {
  * keyed to viewport height shifts the instant mobile chrome retracts.
  */
 @media (max-width: 767px) {
-  .blog-scene__willow {
+  .ambient-scene--blog .ambient-scene__left {
     width: 88vw;
     left: -14vw;
     bottom: auto;
@@ -259,7 +286,7 @@ body {
     opacity: calc(0.45 * var(--scene-intensity));
   }
 
-  .blog-scene__blossom {
+  .ambient-scene--blog .ambient-scene__right {
     width: 76vw;
     right: -10vw;
     bottom: auto;
@@ -267,17 +294,32 @@ body {
     opacity: calc(0.42 * var(--scene-intensity));
   }
 
-  .blog-scene__mountain {
+  .ambient-scene--blog .ambient-scene__far {
     width: 92vw;
     left: 50%;
     margin-left: -46vw;
     top: 62vw;
     opacity: calc(0.38 * var(--scene-intensity));
   }
+
+  .ambient-scene--home .ambient-scene__left {
+    width: 150vw;
+    left: -22vw;
+    bottom: auto;
+    top: 96vw;
+    opacity: calc(0.24 * var(--scene-intensity));
+  }
+
+  .ambient-scene--home .ambient-scene__far {
+    width: 140vw;
+    right: -26vw;
+    top: 52vw;
+    opacity: calc(0.2 * var(--scene-intensity));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .blog-scene img {
+  .ambient-scene img {
     animation: none;
   }
 }

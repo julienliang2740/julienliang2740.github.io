@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { SereneScroll } from "@/components/serene-scroll";
+import { AmbientScene } from "@/components/ambient-scene";
 
 type TechItem = string | { label: string; crossedOut?: boolean };
 
@@ -100,10 +101,11 @@ export default function Home() {
   return (
     <main className="min-h-screen overflow-x-clip w-full">
       <Navbar overlay />
+      <AmbientScene variant="home" />
 
       <SereneScroll />
 
-      <div className="px-8 py-16 md:px-16 lg:px-24">
+      <div className="relative z-10 px-8 py-16 md:px-16 lg:px-24">
         <div className="max-w-3xl mx-auto">
           <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-[1fr_260px] md:items-start">
             <div className="space-y-6 text-lg leading-relaxed md:order-1">

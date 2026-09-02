@@ -52,7 +52,7 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
       className={`fixed top-0 left-0 right-0 z-50 px-4 py-4 md:px-8 lg:px-12 w-full transition-colors duration-300 ${
         floating
           ? "bg-transparent border-b border-transparent"
-          : "bg-[#faf9f6]/95 dark:bg-[#0f0f0f]/95 backdrop-blur-sm border-b border-[#e5e3e0] dark:border-[#2a2a2a]"
+          : "bg-[#ece6da]/95 dark:bg-[#0f0f0f]/95 backdrop-blur-sm border-b border-[#ded7c9] dark:border-[#2a2a2a]"
       }`}
       style={floating ? { color: INK } : undefined}
     >
