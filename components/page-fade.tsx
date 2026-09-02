@@ -16,16 +16,15 @@ import { useEffect, useRef, useState } from "react";
  * link component, so every existing next/link keeps working untouched.
  */
 
-// Out is quicker than in: covering the old page should feel responsive to the
-// click, while revealing the new one can settle. The hold matters more than it
-// looks — tearing down the home page (seven scene layers plus its listeners)
-// blocks the main thread long enough that without it the curtain reverses
-// before it has finished covering, so that direction dissolved to only ~0.7
-// and lasted half as long as the other. Holding gives the incoming page a beat
-// to paint and makes both directions identical.
-const FADE_OUT_MS = 180;
-const HOLD_MS = 90;
-const FADE_IN_MS = 300;
+// Out is quicker than in: veiling the old page should feel responsive to the
+// click, while lifting it off the new one can settle. The hold gives the
+// incoming page a beat to paint before the veil lifts — without it, tearing
+// down the home page (seven scene layers plus its listeners) blocks the main
+// thread long enough that the veil starts reversing while the old page is
+// still on screen, which is what made the two directions look different.
+const FADE_OUT_MS = 110;
+const HOLD_MS = 50;
+const FADE_IN_MS = 170;
 
 export function PageFade() {
   const router = useRouter();

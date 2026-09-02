@@ -149,8 +149,13 @@ body {
   transition-timing-function: ease;
 }
 
+/*
+ * A veil, not a blackout. Covering the page completely reads as a page load;
+ * stopping well short of opaque just softens the swap, which is all this needs
+ * to do.
+ */
 .page-fade[data-leaving] {
-  opacity: 1;
+  opacity: 0.55;
 }
 
 @media (prefers-reduced-motion: reduce) {
