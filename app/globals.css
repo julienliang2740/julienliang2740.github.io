@@ -233,7 +233,7 @@ body {
   width: 62vw;
   left: -14vw;
   bottom: -18%;
-  opacity: calc(0.3 * var(--scene-intensity));
+  opacity: calc(0.4 * var(--scene-intensity));
   mask-image: linear-gradient(to bottom, #000 62%, transparent 96%);
 }
 
@@ -243,7 +243,7 @@ body {
   left: auto;
   margin-left: 0;
   top: 26%;
-  opacity: calc(0.26 * var(--scene-intensity));
+  opacity: calc(0.34 * var(--scene-intensity));
   mask-image: linear-gradient(to left, #000 72%, transparent 100%);
 }
 

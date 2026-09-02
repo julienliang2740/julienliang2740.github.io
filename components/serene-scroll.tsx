@@ -107,15 +107,15 @@ export function SereneScroll() {
   const pt = usePointer();
   const px = (v: number) => `${v.toFixed(2)}px`;
 
-  // Jump to the end of the scene, which is where the page content begins.
+  // Jump to the content. It overlaps the end of the scene, so this targets the
+  // section itself rather than the bottom of the scene — that would now land
+  // well past where the writing starts.
   const scrollToContent = () => {
+    const content = document.getElementById("page-content");
     const el = wrapRef.current;
-    if (!el) return;
+    const top = content ? content.offsetTop : el ? el.offsetTop + el.offsetHeight : 0;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    window.scrollTo({
-      top: el.offsetTop + el.offsetHeight,
-      behavior: reduce ? "auto" : "smooth",
-    });
+    window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
   };
 
   // depth: 0 = far, 1 = near. drives speed and mouse parallax.
@@ -126,16 +126,24 @@ export function SereneScroll() {
     bank: 1,
   };
 
-  const introOpacity = 1 - easeIn(seg(p, 0.35, 0.75));
+  const introOpacity = 1 - easeIn(seg(p, 0.3, 0.7));
 
-  // far layers linger and dissolve; near layers leave early and hard
-  const moonP = easeOut(seg(p, 0.05, 1.0));
-  const waterP = easeOut(seg(p, 0.1, 0.95));
-  const treeP = easeIn(seg(p, 0.05, 0.9));
-  const bankP = easeIn(seg(p, 0.0, 0.8));
+  // far layers linger and dissolve; near layers leave early and hard. Every
+  // one of them now runs to the end of the pinned range — when they finished
+  // early the scene sat empty for the best part of a thousand pixels before
+  // the content arrived.
+  const moonP = easeOut(seg(p, 0.08, 1.0));
+  const waterP = easeOut(seg(p, 0.12, 1.0));
+  const treeP = easeIn(seg(p, 0.05, 0.97));
+  const bankP = easeIn(seg(p, 0.0, 0.9));
+
+  // The paper itself lifts last, revealing the ambient scene behind the page —
+  // the same willow and mountains, much fainter — so the hero recedes into the
+  // rest of the page instead of emptying out and handing over to nothing.
+  const paperP = easeIn(seg(p, 0.7, 1.0));
 
   return (
-    <div ref={wrapRef} data-scene className="relative z-10 h-[260svh] font-hero">
+    <div ref={wrapRef} data-scene className="relative z-10 h-[170svh] font-hero">
       {/*
         dvh, not svh: svh is the viewport height *with* mobile browser chrome
         showing. Once the URL bar hides on scroll the visible viewport grows,
@@ -144,7 +152,10 @@ export function SereneScroll() {
         above stays in svh so the scroll length doesn't change mid-scroll.
       */}
       <section className="sticky top-0 h-[100dvh] overflow-hidden">
-        <Layer src={LAYERS.background} style={{ transform: `scale(${1 + p * 0.08})` }} />
+        <Layer
+          src={LAYERS.background}
+          style={{ transform: `scale(${1 + p * 0.08})`, opacity: 1 - paperP }}
+        />
 
         {/* moon — farthest: barely moves, dissolves softly */}
         <div className="pointer-events-none absolute inset-0 animate-hero-bob">
@@ -239,15 +250,6 @@ export function SereneScroll() {
           </button>
         </div>
 
-        {/* hand the painting off to the page background at the end of the scene */}
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[60dvh]"
-          style={{
-            background:
-              "linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--background) 18%, transparent) 38%, color-mix(in srgb, var(--background) 55%, transparent) 66%, color-mix(in srgb, var(--background) 85%, transparent) 86%, var(--background) 100%)",
-            opacity: easeIn(seg(p, 0.7, 1)),
-          }}
-        />
       </section>
     </div>
   );

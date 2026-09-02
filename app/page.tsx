@@ -105,7 +105,7 @@ export default function Home() {
 
       <SereneScroll />
 
-      <div className="relative z-10 px-8 py-16 md:px-16 lg:px-24">
+      <div id="page-content" className="relative z-10 -mt-[38svh] px-8 pb-16 pt-24 md:px-16 lg:px-24">
         <div className="max-w-3xl mx-auto">
           <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-[1fr_260px] md:items-start">
             <div className="space-y-6 text-lg leading-relaxed md:order-1">
