@@ -71,11 +71,9 @@ export function Reveal({
     const el = ref.current;
     if (!el) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setShown(true);
-      return;
-    }
-
+    // No reduced-motion branch here on purpose: the stylesheet already forces
+    // every section visible with no transition under that preference, so the
+    // position checks below are simply harmless there.
     let done = false;
     const check: Check = () => {
       if (done) return;
