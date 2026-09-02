@@ -123,7 +123,14 @@ export function SereneScroll() {
 
   return (
     <div ref={wrapRef} data-scene className="relative h-[260svh] font-hero">
-      <section className="sticky top-0 h-[100svh] overflow-hidden">
+      {/*
+        dvh, not svh: svh is the viewport height *with* mobile browser chrome
+        showing. Once the URL bar hides on scroll the visible viewport grows,
+        and an svh-sized pane leaves a strip of page background at the bottom.
+        dvh tracks the live viewport, so the scene always fills it. The wrapper
+        above stays in svh so the scroll length doesn't change mid-scroll.
+      */}
+      <section className="sticky top-0 h-[100dvh] overflow-hidden">
         <Layer src={LAYERS.background} style={{ transform: `scale(${1 + p * 0.08})` }} />
 
         {/* moon — farthest: barely moves, dissolves softly */}
@@ -219,7 +226,7 @@ export function SereneScroll() {
 
         {/* hand the painting off to the page background at the end of the scene */}
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[60svh]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[60dvh]"
           style={{
             background:
               "linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--background) 18%, transparent) 38%, color-mix(in srgb, var(--background) 55%, transparent) 66%, color-mix(in srgb, var(--background) 85%, transparent) 86%, var(--background) 100%)",
