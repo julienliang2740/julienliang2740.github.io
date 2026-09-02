@@ -99,7 +99,7 @@ const projects: Project[] = [
 export default function Home() {
   return (
     <main className="min-h-screen overflow-x-clip w-full">
-      <Navbar />
+      <Navbar overlay />
 
       <SereneScroll />
 

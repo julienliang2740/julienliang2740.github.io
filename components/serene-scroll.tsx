@@ -21,7 +21,6 @@ const LAYERS = {
   mountainsVillage: "/scene/mountains_village.webp",
   tree: "/scene/tree.webp",
   bank: "/scene/foreground_bank_clean.webp",
-  people: "/scene/people.webp",
 };
 
 function useScrollProgress(ref: React.RefObject<HTMLDivElement | null>) {
@@ -123,7 +122,7 @@ export function SereneScroll() {
   const bankP = easeIn(seg(p, 0.0, 0.8));
 
   return (
-    <div ref={wrapRef} className="relative h-[260svh] font-hero">
+    <div ref={wrapRef} data-scene className="relative h-[260svh] font-hero">
       <section className="sticky top-0 h-[100svh] overflow-hidden">
         <Layer src={LAYERS.background} style={{ transform: `scale(${1 + p * 0.08})` }} />
 
@@ -166,7 +165,7 @@ export function SereneScroll() {
           />
         </div>
 
-        {/* bank + people — nearest: fastest push left */}
+        {/* bank — nearest: fastest push left */}
         <div
           className="pointer-events-none absolute inset-0 will-change-transform"
           style={{
@@ -176,7 +175,6 @@ export function SereneScroll() {
           }}
         >
           <Layer src={LAYERS.bank} className="scene-near" />
-          <Layer src={LAYERS.people} className="scene-near" />
         </div>
 
         <div
@@ -201,10 +199,22 @@ export function SereneScroll() {
         </div>
 
         <div
-          className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-[11px] tracking-[0.3em] uppercase"
+          className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
           style={{ color: INK_MUTED, opacity: 1 - p * 6 }}
         >
-          Scroll
+          <span className="text-[11px] tracking-[0.3em] uppercase">Scroll</span>
+          <svg
+            className="animate-scroll-hint h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <path d="M12 4.5v13.5M6.5 12.5 12 18l5.5-5.5" />
+          </svg>
         </div>
 
         {/* hand the painting off to the page background at the end of the scene */}
