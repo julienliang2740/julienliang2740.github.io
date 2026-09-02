@@ -142,26 +142,22 @@ body {
 }
 
 /*
- * The page itself fades, rather than a curtain over it. Reaching a true zero
- * is what makes it smooth: the route swaps while nothing is on screen, so no
- * frame ever shows the old and new pages at once.
+ * Page cross-fade. The browser holds a snapshot of the outgoing page and
+ * dissolves it directly into the incoming one — both on screen at once, so
+ * there is never a frame of blank or of a half-covered swap in between.
  */
-.page-fade {
-  opacity: 1;
-  transition-property: opacity;
-  /* a gentle ease both ways — no sharp start or stop to catch the eye */
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.page-fade[data-leaving] {
-  opacity: 0;
-  pointer-events: none;
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  /* let the two overlap fully rather than one waiting on the other */
+  mix-blend-mode: normal;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .page-fade {
-    transition: none;
-    opacity: 1;
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
   }
 }
 
@@ -188,37 +184,50 @@ body {
   pointer-events: none;
 }
 
+/*
+ * The layers all share one 948x1659 canvas, so each one is mostly empty space
+ * around its subject. They are sized and offset per layer to bring each
+ * subject to the edge it belongs on rather than tiled as whole images.
+ */
 .blog-scene img {
   position: absolute;
   max-width: none;
   will-change: transform;
 }
 
-/* Willow anchored low on the left, clear of the text column. */
-.blog-scene__tree {
-  width: 104vw;
-  left: -15vw;
-  top: 39%;
-  opacity: calc(0.5 * var(--scene-intensity));
-  /* The source art is cropped flat across the rock at its base; fading the
-     bottom dissolves that straight edge instead of parking it on the page. */
-  mask-image: linear-gradient(to bottom, #000 62%, transparent 96%);
+.blog-scene__willow {
+  width: 38vw;
+  left: -5vw;
+  bottom: -12%;
+  opacity: calc(0.45 * var(--scene-intensity));
   animation: blog-sway 19s ease-in-out infinite;
 }
 
-/* Mountains sit high on the right, the far plane of the view. */
-.blog-scene__mountains {
-  width: 88vw;
-  right: -12vw;
-  top: 18%;
-  opacity: calc(0.4 * var(--scene-intensity));
-  mask-image: linear-gradient(to left, #000 70%, transparent 100%);
-  animation: blog-drift 27s ease-in-out infinite;
+.blog-scene__blossom {
+  width: 32vw;
+  right: -3vw;
+  bottom: -14%;
+  opacity: calc(0.42 * var(--scene-intensity));
+  animation: blog-sway-slow 24s ease-in-out infinite;
+}
+
+.blog-scene__mountain {
+  width: 40vw;
+  left: 50%;
+  margin-left: -20vw;
+  top: 16%;
+  opacity: calc(0.38 * var(--scene-intensity));
+  animation: blog-drift 30s ease-in-out infinite;
 }
 
 @keyframes blog-sway {
   0%, 100% { transform: translate3d(-5px, 0, 0) rotate(-0.25deg); }
   50%      { transform: translate3d(5px, -4px, 0) rotate(0.25deg); }
+}
+
+@keyframes blog-sway-slow {
+  0%, 100% { transform: translate3d(4px, 0, 0) rotate(0.2deg); }
+  50%      { transform: translate3d(-4px, -3px, 0) rotate(-0.2deg); }
 }
 
 @keyframes blog-drift {
@@ -229,34 +238,39 @@ body {
 /*
  * Dark mode: the painting is ink on white, so its linework vanishes against a
  * near-black page. Inverting brings the strokes back as light on dark, and the
- * hue rotation puts the greens and blues back where they belong afterwards.
+ * hue rotation puts the greens and pinks back where they belong afterwards.
  */
 :where(.dark) .blog-scene img {
-  filter: invert(1) hue-rotate(180deg) saturate(0.75) brightness(0.85);
+  filter: invert(1) hue-rotate(180deg) saturate(0.7) brightness(0.85);
 }
 
 /*
- * Phones: scaled so each subject actually reads at its full shape rather than
- * a sliver poking in from the edge — the willow sits whole against the left,
- * the mountains and village against the right.
+ * Phones: vertical offsets in vw, not % or vh. Viewport WIDTH cannot change
+ * while you scroll, so these resolve to the same pixel value whether the URL
+ * bar is showing or hidden — the scene is genuinely nailed down. Anything
+ * keyed to viewport height shifts the instant mobile chrome retracts.
  */
 @media (max-width: 767px) {
-  /*
-   * Vertical offsets in vw, not % or vh. Viewport WIDTH cannot change while
-   * you scroll, so these resolve to the same pixel value whether the URL bar
-   * is showing or hidden — the scene is genuinely nailed down. Anything keyed
-   * to viewport height shifts the instant mobile chrome retracts.
-   */
-  .blog-scene__tree {
-    width: 164vw;
-    left: -6vw;
+  .blog-scene__willow {
+    width: 88vw;
+    left: -14vw;
+    bottom: auto;
     top: 96vw;
+    opacity: calc(0.45 * var(--scene-intensity));
+  }
+
+  .blog-scene__blossom {
+    width: 76vw;
+    right: -10vw;
+    bottom: auto;
+    top: 118vw;
     opacity: calc(0.42 * var(--scene-intensity));
   }
 
-  .blog-scene__mountains {
-    width: 146vw;
-    right: -4vw;
+  .blog-scene__mountain {
+    width: 92vw;
+    left: 50%;
+    margin-left: -46vw;
     top: 62vw;
     opacity: calc(0.38 * var(--scene-intensity));
   }
