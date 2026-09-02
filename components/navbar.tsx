@@ -9,10 +9,19 @@ import { SocialLinks } from "@/components/social-links";
 // regardless of the theme while the bar itself is invisible.
 const INK = "oklch(0.26 0.012 60)";
 
+// A soft paper-coloured halo instead of a bar, so links stay readable where
+// they cross the painting's darker strokes.
+const HALO =
+  "drop-shadow(0 0 3px rgba(247,243,236,0.95)) drop-shadow(0 0 7px rgba(247,243,236,0.75))";
+
 /**
- * `overlay` lets the bar float over the opening scene with no background,
- * so the painting isn't cut off by a strip across the top. It picks the solid
- * bar back up as soon as the page content scrolls underneath it.
+ * Everything sits together on the right. Over the opening scene that side is
+ * open paper, while the left is where the willow hangs — icons placed there
+ * disappear into the branches.
+ *
+ * `overlay` lets the bar float over the scene with no background, so the
+ * painting isn't cut off by a strip across the top. It picks the solid bar
+ * back up as soon as page content scrolls underneath it.
  */
 export function Navbar({ overlay = false }: { overlay?: boolean }) {
   const [overScene, setOverScene] = useState(overlay);
@@ -48,28 +57,18 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
       style={floating ? { color: INK } : undefined}
     >
       <div
-        className="flex justify-between items-center max-w-full"
-        style={
-          floating
-            ? {
-                // A soft paper-coloured halo instead of a bar, so the links stay
-                // readable where they cross the willow's dark strokes.
-                filter:
-                  "drop-shadow(0 0 3px rgba(247,243,236,0.95)) drop-shadow(0 0 7px rgba(247,243,236,0.75))",
-              }
-            : undefined
-        }
+        className="flex justify-end items-center gap-5 md:gap-8 max-w-full"
+        style={floating ? { filter: HALO } : undefined}
       >
         <SocialLinks />
-        <div className="flex items-center gap-8">
-          <Link href="/" className="text-base hover:opacity-70 transition-opacity">
-            Home
-          </Link>
-          <Link href="/blogs" className="text-base hover:opacity-70 transition-opacity">
-            Blogs
-          </Link>
-          <ThemeToggle />
-        </div>
+        <span className="h-5 w-px bg-current opacity-25" aria-hidden />
+        <Link href="/" className="text-base hover:opacity-70 transition-opacity">
+          Home
+        </Link>
+        <Link href="/blogs" className="text-base hover:opacity-70 transition-opacity">
+          Blogs
+        </Link>
+        <ThemeToggle />
       </div>
     </div>
   );

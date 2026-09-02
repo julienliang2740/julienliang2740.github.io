@@ -13,9 +13,9 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 // 👇 Helper to compute the initial theme safely (works with SSR)
 function getInitialTheme(): Theme {
-  // On the server: no window/localStorage → just match <html class="dark">
+  // On the server: no window/localStorage → match the default on <html>
   if (typeof window === "undefined") {
-    return "dark";
+    return "light";
   }
 
   // On the client: try localStorage
@@ -23,8 +23,8 @@ function getInitialTheme(): Theme {
   if (saved === "light" || saved === "dark") {
     return saved;
   }
-  
-  return "dark";
+
+  return "light";
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {

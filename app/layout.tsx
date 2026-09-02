@@ -33,8 +33,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {/*
+          Apply the saved theme before first paint. Without this the page
+          renders light, then the provider's effect flips it, so anyone who
+          chose dark sees a flash of the light theme on every navigation.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}",
+          }}
+        />
       </head>
       <body className={`${lora.variable} ${cormorant.variable} antialiased`}>
         <ThemeProvider>{children}</ThemeProvider>
