@@ -31,24 +31,48 @@ let listening = false;
 function runChecks() {
   frame = 0;
   for (const check of Array.from(pending)) check();
-  if (pending.size === 0 && listening) {
-    window.removeEventListener("scroll", schedule);
-    window.removeEventListener("resize", schedule);
-    listening = false;
-  }
+  if (pending.size === 0) stopListening();
 }
 
 function schedule() {
   if (!frame) frame = requestAnimationFrame(runChecks);
 }
 
+/*
+ * Scroll and resize are not the only ways a section can end up on screen. Late
+ * images, a font swap or a <details> opening all reflow the page underneath a
+ * reader who has stopped scrolling, and none of them fire either event — the
+ * section would sit at zero opacity until they happened to scroll again. A
+ * body-size observer catches those, and window load covers anything that
+ * settles after first paint.
+ */
+let sizeObserver: ResizeObserver | null = null;
+
+function startListening() {
+  if (listening) return;
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule);
+  window.addEventListener("load", schedule);
+  if ("ResizeObserver" in window) {
+    sizeObserver = new ResizeObserver(schedule);
+    sizeObserver.observe(document.body);
+  }
+  listening = true;
+}
+
+function stopListening() {
+  if (!listening) return;
+  window.removeEventListener("scroll", schedule);
+  window.removeEventListener("resize", schedule);
+  window.removeEventListener("load", schedule);
+  sizeObserver?.disconnect();
+  sizeObserver = null;
+  listening = false;
+}
+
 function watch(check: Check) {
   pending.add(check);
-  if (!listening) {
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    listening = true;
-  }
+  startListening();
   check();
   return () => {
     pending.delete(check);
@@ -65,7 +89,7 @@ export function Reveal({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
+  const [state, setState] = useState<"hidden" | "shown" | "instant">("hidden");
 
   useEffect(() => {
     const el = ref.current;
@@ -77,13 +101,19 @@ export function Reveal({
     let done = false;
     const check: Check = () => {
       if (done) return;
+      const rect = el.getBoundingClientRect();
       // Start a little before the section reaches the bottom edge, so it is
       // settling as it arrives rather than starting once it is already read.
-      if (el.getBoundingClientRect().top < window.innerHeight * 0.92) {
-        done = true;
-        pending.delete(check);
-        setShown(true);
-      }
+      if (rect.top >= window.innerHeight * 0.92) return;
+      done = true;
+      pending.delete(check);
+      /*
+       * Anything already above the viewport is shown with no animation. There
+       * is nothing to reveal to someone who has scrolled past it, and jumping
+       * down a long page would otherwise kick off every remaining section's
+       * transition at once — fifteen at a time took over a second to settle.
+       */
+      setState(rect.bottom < 0 ? "instant" : "shown");
     };
 
     return watch(check);
@@ -93,7 +123,8 @@ export function Reveal({
     <div
       ref={ref}
       className={`reveal ${className}`}
-      data-shown={shown ? "" : undefined}
+      data-shown={state !== "hidden" ? "" : undefined}
+      data-instant={state === "instant" ? "" : undefined}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}

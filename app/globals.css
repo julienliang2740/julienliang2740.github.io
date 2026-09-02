@@ -344,6 +344,11 @@ body {
   transform: none;
 }
 
+/* Scrolled past before it was ever seen — no point animating it in. */
+.reveal-ready .reveal[data-instant] {
+  transition: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal-ready .reveal {
     opacity: 1;

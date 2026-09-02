@@ -18,7 +18,8 @@ import { useEffect, useRef } from "react";
  * directly into the blog scene.
  *
  * Where the API is missing the navigation is simply instant, which is far less
- * invasive than reintroducing a blank flash for those browsers.
+ * invasive than reintroducing a blank flash for those browsers. Moves within
+ * the blog are instant too — same backdrop, same ground, nothing to dissolve.
  */
 
 type ViewTransitionDocument = Document & {
@@ -59,6 +60,12 @@ export function PageFade({ children }: { children: React.ReactNode }) {
       }
       if (url.origin !== window.location.origin) return;
       if (url.pathname.replace(/\/$/, "") === pathname.replace(/\/$/, "")) return;
+
+      // Moving around inside the blog is not a change of scene — the backdrop
+      // and the ground are identical either side, so a cross-fade only adds
+      // latency to what should feel like opening a page in the same place.
+      const inBlog = (path: string) => path.startsWith("/blogs");
+      if (inBlog(pathname) && inBlog(url.pathname)) return;
 
       const doc = document as ViewTransitionDocument;
       if (
