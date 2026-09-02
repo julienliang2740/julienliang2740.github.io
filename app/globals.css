@@ -104,6 +104,7 @@ body {
   color: oklch(0.36 0.02 55);
   border-color: color-mix(in oklab, oklch(0.2 0.016 55) 30%, transparent);
   background-color: transparent;
+  cursor: pointer;
   transition:
     background-color 0.3s ease,
     color 0.3s ease,
@@ -113,10 +114,12 @@ body {
 
 .scene-cta:hover,
 .scene-cta:focus-visible {
-  background-color: #fffdf7;
+  /* A warm ivory just above the paper. Anything nearer true white reads as a
+     hole punched in the painting rather than a raised surface. */
+  background-color: #f7f1e7;
   color: oklch(0.2 0.016 55);
-  border-color: color-mix(in oklab, oklch(0.2 0.016 55) 45%, transparent);
-  box-shadow: 0 8px 24px rgba(62, 52, 40, 0.12);
+  border-color: color-mix(in oklab, oklch(0.2 0.016 55) 42%, transparent);
+  box-shadow: 0 4px 14px rgba(62, 52, 40, 0.09);
 }
 
 .scene-cta:focus-visible {
