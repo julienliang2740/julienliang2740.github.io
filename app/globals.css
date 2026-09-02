@@ -158,3 +158,84 @@ body {
     display: none;
   }
 }
+
+/* ---- Blog ambient backdrop -------------------------------------------- */
+
+.blog-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blog-scene img {
+  position: absolute;
+  max-width: none;
+  will-change: transform;
+}
+
+/* Willow anchored to the bottom-left corner, well clear of the text column. */
+.blog-scene__tree {
+  width: 104vw;
+  left: -15vw;
+  bottom: -10vh;
+  opacity: calc(0.5 * var(--scene-intensity));
+  /* The source art is cropped flat across the rock at its base; fading the
+     bottom dissolves that straight edge instead of parking it on the page. */
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 96%);
+  animation: blog-sway 19s ease-in-out infinite;
+}
+
+/* Mountains sit high on the right, the far plane of the view. */
+.blog-scene__mountains {
+  width: 88vw;
+  right: -12vw;
+  top: 18vh;
+  opacity: calc(0.4 * var(--scene-intensity));
+  mask-image: linear-gradient(to left, #000 70%, transparent 100%);
+  animation: blog-drift 27s ease-in-out infinite;
+}
+
+@keyframes blog-sway {
+  0%, 100% { transform: translate3d(-5px, 0, 0) rotate(-0.25deg); }
+  50%      { transform: translate3d(5px, -4px, 0) rotate(0.25deg); }
+}
+
+@keyframes blog-drift {
+  0%, 100% { transform: translate3d(8px, 0, 0); }
+  50%      { transform: translate3d(-8px, -5px, 0); }
+}
+
+/*
+ * Dark mode: the painting is ink on white, so its linework vanishes against a
+ * near-black page. Inverting brings the strokes back as light on dark, and the
+ * hue rotation puts the greens and blues back where they belong afterwards.
+ */
+:where(.dark) .blog-scene img {
+  filter: invert(1) hue-rotate(180deg) saturate(0.75) brightness(0.85);
+}
+
+/* Phones have no side margins to spare, so the scene retreats to a hint. */
+@media (max-width: 767px) {
+  .blog-scene__tree {
+    width: 200vw;
+    left: -62vw;
+    bottom: -8vh;
+    opacity: calc(0.28 * var(--scene-intensity));
+  }
+
+  .blog-scene__mountains {
+    width: 150vw;
+    right: -30vw;
+    /* clear of the post list, which starts high on a phone */
+    top: 32vh;
+    opacity: calc(0.26 * var(--scene-intensity));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-scene img {
+    animation: none;
+  }
+}

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getBlogBySlug, getAllPublishedBlogs } from "@/lib/blogs";
 import { Navbar } from "@/components/navbar";
+import { BlogScene } from "@/components/blog-scene";
 import Polyterminator from "./polyterminator";
 import Polyterminal  from "./polyterminal";
 
@@ -32,8 +33,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   return (
     <main className="min-h-screen overflow-x-hidden w-full">
       <Navbar />
+      <BlogScene intensity={0.4} />
 
-      <article className="px-8 py-16 md:px-16 lg:px-24 pt-24 md:pt-28 w-full max-w-full">
+      <article className="relative z-10 px-8 py-16 md:px-16 lg:px-24 pt-24 md:pt-28 w-full max-w-full">
         <div className="max-w-3xl mx-auto">
           <header className="mb-12">
             <h1 className="text-3xl md:text-4xl mb-4">{blog.title}</h1>
