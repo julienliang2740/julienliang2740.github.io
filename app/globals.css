@@ -134,33 +134,26 @@ body {
 }
 
 /*
- * Page cross-dissolve curtain. Sits above everything, including the navbar, so
- * the whole page dissolves as one rather than the bar flicking between its
- * floating and solid states mid-transition.
+ * The page itself fades, rather than a curtain over it. Reaching a true zero
+ * is what makes it smooth: the route swaps while nothing is on screen, so no
+ * frame ever shows the old and new pages at once.
  */
 .page-fade {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background-color: var(--background);
-  opacity: 0;
-  pointer-events: none;
+  opacity: 1;
   transition-property: opacity;
-  transition-timing-function: ease;
+  /* a gentle ease both ways — no sharp start or stop to catch the eye */
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/*
- * A veil, not a blackout. Covering the page completely reads as a page load;
- * stopping well short of opaque just softens the swap, which is all this needs
- * to do.
- */
 .page-fade[data-leaving] {
-  opacity: 0.55;
+  opacity: 0;
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .page-fade {
-    display: none;
+    transition: none;
+    opacity: 1;
   }
 }
 

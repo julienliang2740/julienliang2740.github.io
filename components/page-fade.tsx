@@ -4,29 +4,29 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Cross-dissolve between pages.
+ * Cross-fade between pages.
  *
- * Without this, leaving the home page cuts straight from the opening scene's
- * warm paper to the site background — a hard jump, and a very loud one in dark
- * mode. A curtain in the page background colour fades in over the outgoing
- * page, the route changes behind it, then it fades back out. The two pages
- * dissolve through their shared ground instead of swapping in one frame.
+ * An earlier version laid a translucent curtain over the page and swapped the
+ * route behind it. That never looked smooth: the curtain only reached partial
+ * opacity, so the instant the route changed you still saw the old page snap to
+ * the new one straight through it — softened, but still a cut.
  *
- * Navigation is caught by one delegated click handler rather than a custom
- * link component, so every existing next/link keeps working untouched.
+ * So instead of veiling the swap, this fades the page itself right down to
+ * zero, changes route while nothing is on screen, and fades the new one up.
+ * There is no moment where two different pages are visible, so there is no cut
+ * to soften — the pages dissolve through the shared background.
+ *
+ * Navigation is caught by one delegated click handler, so every existing
+ * next/link keeps working untouched.
  */
 
-// Out is quicker than in: veiling the old page should feel responsive to the
-// click, while lifting it off the new one can settle. The hold gives the
-// incoming page a beat to paint before the veil lifts — without it, tearing
-// down the home page (seven scene layers plus its listeners) blocks the main
-// thread long enough that the veil starts reversing while the old page is
-// still on screen, which is what made the two directions look different.
-const FADE_OUT_MS = 110;
-const HOLD_MS = 50;
-const FADE_IN_MS = 170;
+const FADE_OUT_MS = 170;
+// Small cushion past the fade so the route only changes once the old page has
+// genuinely reached zero — a frame of jank here would expose the swap.
+const SWAP_DELAY_MS = FADE_OUT_MS + 40;
+const FADE_IN_MS = 260;
 
-export function PageFade() {
+export function PageFade({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [leaving, setLeaving] = useState(false);
@@ -55,7 +55,6 @@ export function PageFade() {
 
       const href = anchor.getAttribute("href");
       if (!href || anchor.target === "_blank" || anchor.hasAttribute("download")) return;
-      // leave mailto:, tel:, external origins and in-page anchors alone
       if (/^[a-z]+:/i.test(href) && !href.startsWith("/")) return;
       if (href.startsWith("#")) return;
 
@@ -66,7 +65,6 @@ export function PageFade() {
         return;
       }
       if (url.origin !== window.location.origin) return;
-      // already here — nothing to dissolve
       if (url.pathname.replace(/\/$/, "") === pathname.replace(/\/$/, "")) return;
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -78,9 +76,9 @@ export function PageFade() {
       setLeaving(true);
       clear();
       timers.current.push(
-        window.setTimeout(() => router.push(url.pathname + url.search), FADE_OUT_MS),
-        // safety net: never strand the curtain if navigation stalls
-        window.setTimeout(() => setLeaving(false), FADE_OUT_MS + 2500),
+        window.setTimeout(() => router.push(url.pathname + url.search), SWAP_DELAY_MS),
+        // safety net: never strand the page invisible if navigation stalls
+        window.setTimeout(() => setLeaving(false), SWAP_DELAY_MS + 2500),
       );
     };
 
@@ -91,21 +89,35 @@ export function PageFade() {
     };
   }, [router, pathname]);
 
-  // The new route has rendered — hold a beat, then lift the curtain.
+  /*
+   * Bring the new route up — but only once it has actually been painted.
+   *
+   * `pathname` updates while React is still rendering the incoming tree, so
+   * reacting to it directly starts the fade-in before the new DOM is on
+   * screen, and the swap lands mid-fade in plain view (measured at 0.24
+   * opacity). Two frames of waiting puts this after the commit has painted,
+   * so the page is still at zero when the content changes underneath it.
+   */
   useEffect(() => {
     timers.current.forEach(clearTimeout);
     timers.current = [];
-    const id = window.setTimeout(() => setLeaving(false), HOLD_MS);
-    timers.current.push(id);
-    return () => clearTimeout(id);
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => setLeaving(false));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
   }, [pathname]);
 
   return (
     <div
-      aria-hidden
       className="page-fade"
       data-leaving={leaving ? "" : undefined}
       style={{ transitionDuration: `${leaving ? FADE_OUT_MS : FADE_IN_MS}ms` }}
-    />
+    >
+      {children}
+    </div>
   );
 }

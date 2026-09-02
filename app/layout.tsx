@@ -50,8 +50,7 @@ export default function RootLayout({
       </head>
       <body className={`${lora.variable} ${cormorant.variable} antialiased`}>
         <ThemeProvider>
-          <PageFade />
-          {children}
+          <PageFade>{children}</PageFade>
         </ThemeProvider>
       </body>
     </html>
