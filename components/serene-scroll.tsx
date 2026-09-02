@@ -128,6 +128,12 @@ export function SereneScroll() {
 
   const introOpacity = 1 - easeIn(seg(p, 0.3, 0.7));
 
+  // Layer scales are fixed. Each one's scale only exists to frame and crop it;
+  // tying it to scroll as well made the art swell as it left — the foreground
+  // bank grew by 18% and the tree by 10% on the way out, which read as the
+  // scene expanding rather than departing. They now slide and fade at a
+  // constant size.
+
   // far layers linger and dissolve; near layers leave early and hard. Every
   // one of them now runs to the end of the pinned range — when they finished
   // early the scene sat empty for the best part of a thousand pixels before
@@ -154,7 +160,7 @@ export function SereneScroll() {
       <section className="sticky top-0 h-[100dvh] overflow-hidden">
         <Layer
           src={LAYERS.background}
-          style={{ transform: `scale(${1 + p * 0.08})`, opacity: 1 - paperP }}
+          style={{ opacity: 1 - paperP }}
         />
 
         {/* moon — farthest: barely moves, dissolves softly */}
@@ -163,7 +169,7 @@ export function SereneScroll() {
             src={LAYERS.moon}
             className="scene-moon"
             style={{
-              transform: `translate3d(calc(${px(moonP * 130)} + ${px(pt.x * depth.moon * 12)}), ${px(pt.y * depth.moon * 6)}, 0) scale(${1 - moonP * 0.05})`,
+              transform: `translate3d(calc(${px(moonP * 130)} + ${px(pt.x * depth.moon * 12)}), ${px(pt.y * depth.moon * 6)}, 0) scale(1)`,
               opacity: 1 - moonP * 0.95,
               filter: `blur(${moonP * 2}px)`,
             }}
@@ -174,7 +180,7 @@ export function SereneScroll() {
         <div
           className="pointer-events-none absolute inset-0 will-change-transform"
           style={{
-            transform: `translate3d(calc(${px(waterP * 420)} + ${px(pt.x * depth.water * 12)}), ${px(pt.y * depth.water * 6)}, 0) scale(${1.2 - waterP * 0.05})`,
+            transform: `translate3d(calc(${px(waterP * 420)} + ${px(pt.x * depth.water * 12)}), ${px(pt.y * depth.water * 6)}, 0) scale(1.2)`,
             opacity: 1 - waterP * 0.98,
             filter: `blur(${waterP * 3}px)`,
           }}
@@ -189,7 +195,7 @@ export function SereneScroll() {
             src={LAYERS.tree}
             className="scene-near"
             style={{
-              transform: `translate3d(calc(${px(-treeP * 820)} + ${px(pt.x * depth.tree * 12)}), ${px(pt.y * depth.tree * 6)}, 0) scale(${1.2 + treeP * 0.1})`,
+              transform: `translate3d(calc(${px(-treeP * 820)} + ${px(pt.x * depth.tree * 12)}), ${px(pt.y * depth.tree * 6)}, 0) scale(1.2)`,
               opacity: 1 - treeP * 0.98,
               filter: `blur(${treeP * 5}px)`,
             }}
@@ -200,7 +206,7 @@ export function SereneScroll() {
         <div
           className="pointer-events-none absolute inset-0 will-change-transform"
           style={{
-            transform: `translate3d(calc(${px(-bankP * 1150)} + ${px(pt.x * depth.bank * 12)}), ${px(pt.y * depth.bank * 6)}, 0) scale(${1.25 + bankP * 0.18})`,
+            transform: `translate3d(calc(${px(-bankP * 1150)} + ${px(pt.x * depth.bank * 12)}), ${px(pt.y * depth.bank * 6)}, 0) scale(1.25)`,
             opacity: 1 - bankP * 0.98,
             filter: `blur(${bankP * 7}px)`,
           }}
