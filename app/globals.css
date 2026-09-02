@@ -132,3 +132,29 @@ body {
   animation-play-state: paused;
   transform: translateY(2px);
 }
+
+/*
+ * Page cross-dissolve curtain. Sits above everything, including the navbar, so
+ * the whole page dissolves as one rather than the bar flicking between its
+ * floating and solid states mid-transition.
+ */
+.page-fade {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: var(--background);
+  opacity: 0;
+  pointer-events: none;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.page-fade[data-leaving] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-fade {
+    display: none;
+  }
+}

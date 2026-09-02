@@ -4,6 +4,7 @@ import { Afacad_Flux, Cormorant_Garamond } from "next/font/google";
 // import { Lora } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { PageFade } from "@/components/page-fade";
 
 const lora = Afacad_Flux({
   variable: "--font-lora",
@@ -48,7 +49,10 @@ export default function RootLayout({
         />
       </head>
       <body className={`${lora.variable} ${cormorant.variable} antialiased`}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <PageFade />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
