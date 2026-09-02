@@ -6,6 +6,31 @@
 :root {
   --background: #ece6da;
   --foreground: #1a1a1a;
+
+  /*
+   * Scene art and its ink, as variables so the theme swap is pure CSS. Doing
+   * it in JS would mean the first client render uses the day set before the
+   * saved theme is known, flashing daylight art at anyone on dark. Browsers
+   * also only fetch the background-image the active theme actually names, so
+   * a reader downloads one set, not both.
+   */
+  --scene-ink: oklch(0.2 0.016 55);
+  --scene-ink-muted: oklch(0.36 0.02 55);
+  --scene-halo: drop-shadow(0 0 3px rgba(247, 243, 236, 0.95))
+    drop-shadow(0 0 7px rgba(247, 243, 236, 0.75));
+  --scene-cta-hover: #f7f1e7;
+  --scene-cta-shadow: rgba(62, 52, 40, 0.09);
+
+  --scene-background: url("/scene/background.webp");
+  --scene-moon: url("/scene/moon.webp");
+  --scene-water: url("/scene/water_ground.webp");
+  --scene-mountains: url("/scene/mountains_village.webp");
+  --scene-tree: url("/scene/tree.webp");
+  --scene-bank: url("/scene/foreground_bank_clean.webp");
+
+  --blog-willow: url("/scene/blog/willow.webp");
+  --blog-blossom: url("/scene/blog/blossom.webp");
+  --blog-mountain: url("/scene/blog/mountain.webp");
 }
 
 @theme inline {
@@ -16,8 +41,29 @@
 }
 
 .dark {
-  --background: #0f0f0f;
-  --foreground: #faf9f6;
+  /* The night paintings' own ground, sampled from the hero's night sky layer,
+     so the art meets the page with no seam — the same reason light uses the
+     day paper's colour. */
+  --background: #2c3947;
+  --foreground: #f2f5f8;
+
+  --scene-ink: #eef2f7;
+  --scene-ink-muted: #b4c1cd;
+  --scene-halo: drop-shadow(0 0 3px rgba(20, 28, 36, 0.95))
+    drop-shadow(0 0 7px rgba(20, 28, 36, 0.75));
+  --scene-cta-hover: #3d4d5e;
+  --scene-cta-shadow: rgba(6, 10, 14, 0.35);
+
+  --scene-background: url("/scene/night/background.webp");
+  --scene-moon: url("/scene/night/moon.webp");
+  --scene-water: url("/scene/night/water_ground.webp");
+  --scene-mountains: url("/scene/night/mountains_village.webp");
+  --scene-tree: url("/scene/night/tree.webp");
+  --scene-bank: url("/scene/night/foreground_bank.webp");
+
+  --blog-willow: url("/scene/blog/night/willow.webp");
+  --blog-blossom: url("/scene/blog/night/blossom.webp");
+  --blog-mountain: url("/scene/blog/night/mountain.webp");
 }
 
 html {
@@ -43,6 +89,16 @@ body {
   overflow-x: clip;
   width: 100%;
   max-width: 100vw;
+}
+
+/*
+ * Hero layers paint their art as a background image so the theme can swap it
+ * in CSS. `cover` reproduces what object-fit gave the <img> they replaced.
+ */
+.hero-layer {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Opening scene: gentle idle motion on the far and near-mid planes. */
@@ -91,15 +147,15 @@ body {
  */
 @media (max-width: 767px) {
   .scene-near {
-    object-position: 29% center;
+    background-position: 29% center;
   }
 
   .scene-mid {
-    object-position: 88% center;
+    background-position: 88% center;
   }
 
   .scene-moon {
-    object-position: 82% center;
+    background-position: 82% center;
   }
 }
 
@@ -109,8 +165,8 @@ body {
  * fixed to the scene's own palette, not the theme tokens.
  */
 .scene-cta {
-  color: oklch(0.36 0.02 55);
-  border-color: color-mix(in oklab, oklch(0.2 0.016 55) 30%, transparent);
+  color: var(--scene-ink-muted);
+  border-color: color-mix(in oklab, var(--scene-ink) 30%, transparent);
   background-color: transparent;
   cursor: pointer;
   transition:
@@ -122,16 +178,18 @@ body {
 
 .scene-cta:hover,
 .scene-cta:focus-visible {
-  /* A warm ivory just above the paper. Anything nearer true white reads as a
-     hole punched in the painting rather than a raised surface. */
-  background-color: #f7f1e7;
-  color: oklch(0.2 0.016 55);
-  border-color: color-mix(in oklab, oklch(0.2 0.016 55) 42%, transparent);
-  box-shadow: 0 4px 14px rgba(62, 52, 40, 0.09);
+  /* A shade just above the ground it sits on — warm ivory over paper by day,
+     a lifted slate over the night painting. Anything nearer true white or
+     true black reads as a hole punched in the art rather than a raised
+     surface. */
+  background-color: var(--scene-cta-hover);
+  color: var(--scene-ink);
+  border-color: color-mix(in oklab, var(--scene-ink) 42%, transparent);
+  box-shadow: 0 4px 14px var(--scene-cta-shadow);
 }
 
 .scene-cta:focus-visible {
-  outline: 2px solid color-mix(in oklab, oklch(0.2 0.016 55) 55%, transparent);
+  outline: 2px solid color-mix(in oklab, var(--scene-ink) 55%, transparent);
   outline-offset: 3px;
 }
 
@@ -187,10 +245,23 @@ body {
  * Each layer is mostly empty canvas around its subject, so they are sized and
  * offset individually to bring each subject to the edge it belongs on.
  */
-.ambient-scene img {
+.ambient-scene .scene-layer {
   position: absolute;
-  max-width: none;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   will-change: transform;
+}
+
+/*
+ * These layers set only a width and used to take their height from the image's
+ * intrinsic ratio. A div has none, so the canvas shape is declared explicitly.
+ */
+.ambient-scene--blog .scene-layer {
+  aspect-ratio: 948 / 1659;
+}
+
+.ambient-scene--home .scene-layer {
+  aspect-ratio: 1916 / 821;
 }
 
 .ambient-scene__left {
@@ -267,9 +338,7 @@ body {
  * near-black page. Inverting brings the strokes back as light on dark, and the
  * hue rotation puts the greens and pinks back where they belong afterwards.
  */
-:where(.dark) .ambient-scene img {
-  filter: invert(1) hue-rotate(180deg) saturate(0.7) brightness(0.85);
-}
+/* Dark mode uses purpose-made night paintings, so nothing is inverted. */
 
 /*
  * Phones: vertical offsets in vw, not % or vh. Viewport WIDTH cannot change
@@ -319,7 +388,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ambient-scene img {
+  .ambient-scene .scene-layer {
     animation: none;
   }
 }

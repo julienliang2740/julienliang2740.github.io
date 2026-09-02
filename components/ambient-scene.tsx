@@ -20,15 +20,20 @@
 
 type Variant = "blog" | "home";
 
-const LAYERS: Record<Variant, { className: string; src: string }[]> = {
+/*
+ * Layers name a CSS variable rather than a file. The stylesheet points each at
+ * the day or night painting, so the theme swap needs no JavaScript and cannot
+ * flash the wrong set before hydration.
+ */
+const LAYERS: Record<Variant, { className: string; art: string }[]> = {
   blog: [
-    { className: "ambient-scene__far", src: "/scene/blog/mountain.webp" },
-    { className: "ambient-scene__right", src: "/scene/blog/blossom.webp" },
-    { className: "ambient-scene__left", src: "/scene/blog/willow.webp" },
+    { className: "ambient-scene__far", art: "--blog-mountain" },
+    { className: "ambient-scene__right", art: "--blog-blossom" },
+    { className: "ambient-scene__left", art: "--blog-willow" },
   ],
   home: [
-    { className: "ambient-scene__far", src: "/scene/mountains_village.webp" },
-    { className: "ambient-scene__left", src: "/scene/tree.webp" },
+    { className: "ambient-scene__far", art: "--scene-mountains" },
+    { className: "ambient-scene__left", art: "--scene-tree" },
   ],
 };
 
@@ -46,8 +51,11 @@ export function AmbientScene({
       style={{ "--scene-intensity": intensity } as React.CSSProperties}
     >
       {LAYERS[variant].map((layer) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img key={layer.src} className={layer.className} src={layer.src} alt="" />
+        <div
+          key={layer.art}
+          className={`scene-layer ${layer.className}`}
+          style={{ backgroundImage: `var(${layer.art})` }}
+        />
       ))}
     </div>
   );

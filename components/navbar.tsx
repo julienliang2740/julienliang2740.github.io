@@ -5,14 +5,11 @@ import { useEffect, useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SocialLinks } from "@/components/social-links";
 
-// Ink used by the opening scene, so the links stay legible on the paper
-// regardless of the theme while the bar itself is invisible.
-const INK = "oklch(0.20 0.016 55)";
-
-// A soft paper-coloured halo instead of a bar, so links stay readable where
-// they cross the painting's darker strokes.
-const HALO =
-  "drop-shadow(0 0 3px rgba(247,243,236,0.95)) drop-shadow(0 0 7px rgba(247,243,236,0.75))";
+// Ink and halo track the scene's own palette, so the links stay legible on
+// paper by day and on the night painting after dark, while the bar itself
+// stays invisible over the art.
+const INK = "var(--scene-ink)";
+const HALO = "var(--scene-halo)";
 
 /**
  * Everything sits together on the right. Over the opening scene that side is
@@ -52,7 +49,7 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
       className={`fixed top-0 left-0 right-0 z-50 px-4 py-4 md:px-8 lg:px-12 w-full transition-colors duration-300 ${
         floating
           ? "bg-transparent border-b border-transparent"
-          : "bg-[#ece6da]/95 dark:bg-[#0f0f0f]/95 backdrop-blur-sm border-b border-[#ded7c9] dark:border-[#2a2a2a]"
+          : "bg-[#ece6da]/95 dark:bg-[#2c3947]/95 backdrop-blur-sm border-b border-[#ded7c9] dark:border-[#3d4c5b]"
       }`}
       style={floating ? { color: INK } : undefined}
     >

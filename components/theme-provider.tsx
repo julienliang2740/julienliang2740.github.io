@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 
 type Theme = "light" | "dark";
 
@@ -41,7 +42,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
-  const toggleTheme = () => {
+  const applyToggle = () => {
     setTheme((prev) => {
       const next = prev === "light" ? "dark" : "light";
       // Persist only a deliberate choice, so the default stays changeable.
@@ -52,6 +53,32 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }
       return next;
     });
+  };
+
+  /*
+   * Dissolve day into night the same way one page dissolves into the next.
+   * Day and night are different paintings, so flipping them in a single frame
+   * is the same hard cut a page swap was — the browser holds a snapshot of the
+   * old theme and cross-fades it into the new one, both on screen together.
+   */
+  const toggleTheme = () => {
+    const doc = document as Document & {
+      startViewTransition?: (cb: () => void | Promise<void>) => unknown;
+    };
+    if (
+      typeof doc.startViewTransition !== "function" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      applyToggle();
+      return;
+    }
+    doc.startViewTransition(
+      () =>
+        new Promise<void>((resolve) => {
+          flushSync(applyToggle);
+          resolve();
+        }),
+    );
   };
 
   return (

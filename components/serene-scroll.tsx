@@ -11,17 +11,13 @@ import { useEffect, useRef, useState } from "react";
  * the theme toggle never washes the painting out.
  */
 
-const INK = "oklch(0.20 0.016 55)";
-const INK_MUTED = "oklch(0.36 0.020 55)";
-
-const LAYERS = {
-  background: "/scene/background.webp",
-  moon: "/scene/moon.webp",
-  waterGround: "/scene/water_ground.webp",
-  mountainsVillage: "/scene/mountains_village.webp",
-  tree: "/scene/tree.webp",
-  bank: "/scene/foreground_bank_clean.webp",
-};
+/*
+ * Art and ink come from CSS variables, which is what makes the night version
+ * work: the stylesheet swaps both on `.dark`, so there is no hydration flash
+ * of daylight art and only the active theme's images are ever fetched.
+ */
+const INK = "var(--scene-ink)";
+const INK_MUTED = "var(--scene-ink-muted)";
 
 function useScrollProgress(ref: React.RefObject<HTMLDivElement | null>) {
   const [p, setP] = useState(0);
@@ -76,22 +72,19 @@ function usePointer() {
 }
 
 function Layer({
-  src,
+  name,
   style,
   className = "",
 }: {
-  src: string;
+  name: string;
   style?: React.CSSProperties;
   className?: string;
 }) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src}
-      alt=""
+    <div
       aria-hidden
-      className={`pointer-events-none absolute inset-0 h-full w-full object-cover will-change-transform ${className}`}
-      style={style}
+      className={`hero-layer pointer-events-none absolute inset-0 h-full w-full will-change-transform ${className}`}
+      style={{ backgroundImage: `var(--scene-${name})`, ...style }}
     />
   );
 }
@@ -159,14 +152,14 @@ export function SereneScroll() {
       */}
       <section className="sticky top-0 h-[100dvh] overflow-hidden">
         <Layer
-          src={LAYERS.background}
+          name="background"
           style={{ opacity: 1 - paperP }}
         />
 
         {/* moon — farthest: barely moves, dissolves softly */}
         <div className="pointer-events-none absolute inset-0 animate-hero-bob">
           <Layer
-            src={LAYERS.moon}
+            name="moon"
             className="scene-moon"
             style={{
               transform: `translate3d(calc(${px(moonP * 130)} + ${px(pt.x * depth.moon * 12)}), ${px(pt.y * depth.moon * 6)}, 0) scale(1)`,
@@ -185,14 +178,14 @@ export function SereneScroll() {
             filter: `blur(${waterP * 3}px)`,
           }}
         >
-          <Layer src={LAYERS.waterGround} className="scene-mid" />
-          <Layer src={LAYERS.mountainsVillage} className="scene-mid" />
+          <Layer name="water" className="scene-mid" />
+          <Layer name="mountains" className="scene-mid" />
         </div>
 
         {/* tree — near-mid: sways gently, leaves faster */}
         <div className="pointer-events-none absolute inset-0 animate-hero-sway">
           <Layer
-            src={LAYERS.tree}
+            name="tree"
             className="scene-near"
             style={{
               transform: `translate3d(calc(${px(-treeP * 820)} + ${px(pt.x * depth.tree * 12)}), ${px(pt.y * depth.tree * 6)}, 0) scale(1.2)`,
@@ -211,7 +204,7 @@ export function SereneScroll() {
             filter: `blur(${bankP * 7}px)`,
           }}
         >
-          <Layer src={LAYERS.bank} className="scene-near" />
+          <Layer name="bank" className="scene-near" />
         </div>
 
         <div
