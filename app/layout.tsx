@@ -43,7 +43,7 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}",
+              "try{if(localStorage.getItem('theme-v2')==='dark')document.documentElement.classList.add('dark')}catch(e){}",
           }}
         />
       </head>

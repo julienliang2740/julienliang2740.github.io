@@ -7,7 +7,7 @@ import { SocialLinks } from "@/components/social-links";
 
 // Ink used by the opening scene, so the links stay legible on the paper
 // regardless of the theme while the bar itself is invisible.
-const INK = "oklch(0.26 0.012 60)";
+const INK = "oklch(0.20 0.016 55)";
 
 // A soft paper-coloured halo instead of a bar, so links stay readable where
 // they cross the painting's darker strokes.

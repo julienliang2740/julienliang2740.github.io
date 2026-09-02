@@ -11,8 +11,8 @@ import { useEffect, useRef, useState } from "react";
  * the theme toggle never washes the painting out.
  */
 
-const INK = "oklch(0.26 0.012 60)";
-const INK_MUTED = "oklch(0.5 0.015 60)";
+const INK = "oklch(0.20 0.016 55)";
+const INK_MUTED = "oklch(0.36 0.020 55)";
 
 const LAYERS = {
   background: "/scene/background.webp",
@@ -192,13 +192,13 @@ export function SereneScroll() {
           }}
         >
           <h1
-            className="text-4xl leading-tight font-normal sm:text-6xl"
+            className="text-5xl leading-[1.1] font-normal sm:text-7xl"
             style={{ color: INK }}
           >
             Hi, I&apos;m Julien
           </h1>
           <p
-            className="mt-5 max-w-xl text-base sm:text-lg"
+            className="mt-6 max-w-2xl text-balance text-lg sm:text-2xl"
             style={{ color: INK_MUTED, opacity: 1 - easeIn(seg(p, 0.15, 0.45)) }}
           >
             A software engineer building systems people want
@@ -209,13 +209,13 @@ export function SereneScroll() {
           className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
           style={{ color: INK_MUTED, opacity: 1 - p * 6 }}
         >
-          <span className="text-[11px] tracking-[0.3em] uppercase">Scroll</span>
+          <span className="text-[13px] font-medium tracking-[0.28em] uppercase">Scroll</span>
           <svg
-            className="animate-scroll-hint h-4 w-4"
+            className="animate-scroll-hint h-6 w-6"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth={1}
+            strokeWidth={1.6}
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden

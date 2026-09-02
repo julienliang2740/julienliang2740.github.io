@@ -11,41 +11,47 @@ type ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// 👇 Helper to compute the initial theme safely (works with SSR)
+/**
+ * Deliberately not "theme". The previous version wrote the active theme to
+ * that key on every mount, back when the default was dark — so every visitor
+ * ended up with an explicit "dark" saved whether or not they ever chose it,
+ * and switching the default to light could never take effect for them. A new
+ * key ignores those, and we now only write on an actual toggle.
+ */
+const STORAGE_KEY = "theme-v2";
+
+function readStoredTheme(): Theme | null {
+  try {
+    const saved = window.localStorage.getItem(STORAGE_KEY);
+    return saved === "light" || saved === "dark" ? saved : null;
+  } catch {
+    return null;
+  }
+}
+
 function getInitialTheme(): Theme {
-  // On the server: no window/localStorage → match the default on <html>
-  if (typeof window === "undefined") {
-    return "light";
-  }
-
-  // On the client: try localStorage
-  const saved = window.localStorage.getItem("theme") as Theme | null;
-  if (saved === "light" || saved === "dark") {
-    return saved;
-  }
-
-  return "light";
+  if (typeof window === "undefined") return "light";
+  return readStoredTheme() ?? "light";
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // 👇 lazy initializer — runs getInitialTheme only once
   const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
 
-  // Sync <html> class + localStorage whenever theme changes
   useEffect(() => {
-    const root = document.documentElement;
-
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-
-    window.localStorage.setItem("theme", theme);
+    document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    setTheme((prev) => {
+      const next = prev === "light" ? "dark" : "light";
+      // Persist only a deliberate choice, so the default stays changeable.
+      try {
+        window.localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        /* private mode / storage disabled — the toggle still works for this visit */
+      }
+      return next;
+    });
   };
 
   return (
