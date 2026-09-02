@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Navbar } from "@/components/navbar";
+import { SereneScroll } from "@/components/serene-scroll";
 
 type TechItem = string | { label: string; crossedOut?: boolean };
 
@@ -97,45 +98,48 @@ const projects: Project[] = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-x-hidden w-full">
+    <main className="min-h-screen overflow-x-clip w-full">
       <Navbar />
 
-      <div className="px-8 py-16 md:px-16 lg:px-24 pt-24 md:pt-28">
+      <SereneScroll />
+
+      <div className="px-8 py-16 md:px-16 lg:px-24">
         <div className="max-w-3xl mx-auto">
-          <div className="mb-12 flex flex-col md:flex-row items-center gap-8">
-            <Image
-              src="/new_headshot_square.jpg"
-              alt="Julien Liang"
-              width={200}
-              height={200}
-              className="rounded-full"
-              priority
-            />
-            <h1 className="text-3xl md:text-4xl leading-tight">
-              I&apos;m Julien - a software engineer building systems people want
-            </h1>
-          </div>
-
-          <div className="space-y-6 text-lg leading-relaxed">
-            <p>
-              I&apos;m a <strong>Computer Science</strong> student at the University of Waterloo building software for startups, enterprise-scale applications, and everything in between.
-            </p>
-
-            <div className="space-y-4">
+          <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-[1fr_260px] md:items-start">
+            <div className="space-y-6 text-lg leading-relaxed md:order-1">
               <p>
-                I am currently a software engineer at <strong>Cloudflare</strong> building gateway filtering and routing for MCPs, WARP, and more. 
+                I&apos;m a <strong>Computer Science</strong> student at the University of Waterloo building software for startups, enterprise-scale applications, and everything in between.
+              </p>
+
+              <p>
+                I am currently a software engineer at <strong>Cloudflare</strong> building gateway filtering and routing for MCPs, WARP, and more.
                 <br></br>
                 Outside of work I&apos;m building { " " }
                 <strong>
-                    <a
-                      href="https://sparkflowlearn.pages.dev/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:opacity-70 transition-opacity"
-                    >
-                      Sparkflow
-                    </a>
-                  </strong>, an AI mentor that crafts personalized lessons for students.
+                  <a
+                    href="https://sparkflowlearn.pages.dev/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:opacity-70 transition-opacity"
+                  >
+                    Sparkflow
+                  </a>
+                </strong>, an AI mentor that crafts personalized lessons for students.
+              </p>
+            </div>
+
+            <Image
+              src="/new_headshot_square.jpg"
+              alt="Julien Liang"
+              width={520}
+              height={650}
+              className="w-full max-w-[260px] justify-self-center rounded-xl border border-current/15 object-cover aspect-[4/5] md:order-2 md:justify-self-end"
+              priority
+            />
+          </div>
+
+          <div className="space-y-6 text-lg leading-relaxed">
+            <div className="space-y-4">
                 {/* I&apos;ve also built everything from { " " } 
                   <strong>
                     <a
@@ -169,8 +173,6 @@ export default function Home() {
                       data analysis tools
                     </a>
                   </strong> */}
-
-              </p>
 
               <a
                 href="https://sparkflowlearn.pages.dev/"
