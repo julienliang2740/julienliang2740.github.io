@@ -323,3 +323,31 @@ body {
     animation: none;
   }
 }
+
+/* ---- Section reveals --------------------------------------------------- */
+
+/*
+ * Gated on `reveal-ready`, which the layout's inline script sets before first
+ * paint. If scripting is off the class never lands and every section simply
+ * renders visible, rather than the page staying blank.
+ */
+.reveal-ready .reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-rise, 18px));
+  transition:
+    opacity var(--reveal-duration, 700ms) cubic-bezier(0.16, 0.7, 0.3, 1),
+    transform var(--reveal-duration, 700ms) cubic-bezier(0.16, 0.7, 0.3, 1);
+}
+
+.reveal-ready .reveal[data-shown] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-ready .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { SereneScroll } from "@/components/serene-scroll";
 import { AmbientScene } from "@/components/ambient-scene";
+import { Reveal } from "@/components/reveal";
 
 type TechItem = string | { label: string; crossedOut?: boolean };
 
@@ -107,7 +108,8 @@ export default function Home() {
 
       <div id="page-content" className="relative z-10 -mt-[38svh] px-8 pb-16 pt-24 md:px-16 lg:px-24">
         <div className="max-w-3xl mx-auto">
-          <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-[1fr_260px] md:items-start">
+          <Reveal className="mb-12">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_260px] md:items-start">
             <div className="space-y-6 text-lg leading-relaxed md:order-1">
               <p>
                 I&apos;m a <strong>Computer Science</strong> student at the University of Waterloo building software for startups, enterprise-scale applications, and everything in between.
@@ -138,7 +140,8 @@ export default function Home() {
               className="w-full max-w-[260px] justify-self-center rounded-xl border border-current/15 object-cover aspect-[4/5] md:order-2 md:justify-self-end"
               priority
             />
-          </div>
+            </div>
+          </Reveal>
 
           <div className="space-y-6 text-lg leading-relaxed">
             <div className="space-y-4">
@@ -176,6 +179,7 @@ export default function Home() {
                     </a>
                   </strong> */}
 
+              <Reveal>
               <a
                 href="https://sparkflowlearn.pages.dev/"
                 target="_blank"
@@ -212,7 +216,9 @@ export default function Home() {
                   </p>
                 </div>
               </a>
+              </Reveal>
 
+              <Reveal>
               <details className="group">
                 <summary className="cursor-pointer list-none flex items-center gap-1.5 hover:opacity-70 transition-opacity">
                   <svg
@@ -245,7 +251,9 @@ export default function Home() {
                   </li>
                 </ul>
               </details>
+              </Reveal>
 
+              <Reveal>
               <details className="group">
                 <summary className="cursor-pointer list-none flex items-center gap-1.5 hover:opacity-70 transition-opacity">
                   <svg
@@ -308,6 +316,7 @@ export default function Home() {
                   </li>
                 </ul>
               </details>
+              </Reveal>
             </div>
 
             {/* <p>
@@ -321,26 +330,28 @@ export default function Home() {
               <li>Distributed systems</li>
             </ul> */}
 
-            <p>
+            <Reveal><p>
               Beyond software, I'm deeply passionate about history. I've read everything from
               recent works such as <em>1587, a Year of No Significance</em> { " " }
               to 12th-century writings like <em>Ten Essays on Defence</em>.
               {/* (美芹十论) */}
-            </p>
+            </p></Reveal>
 
 
 
 
             <section className="pt-8">
-              <h2 className="text-2xl md:text-3xl font-semibold tracking-[0.22em] uppercase">
-                Projects
-              </h2>
-              <div className="mt-5 border-t border-dashed border-current/40" />
+              <Reveal>
+                <h2 className="text-2xl md:text-3xl font-semibold tracking-[0.22em] uppercase">
+                  Projects
+                </h2>
+                <div className="mt-5 border-t border-dashed border-current/40" />
+              </Reveal>
 
               <div className="mt-8 space-y-8">
-                {projects.map((project) => (
+                {projects.map((project, projectIndex) => (
+                  <Reveal key={project.title} delay={(projectIndex % 2) * 90}>
                   <article
-                    key={project.title}
                     className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 items-start"
                   >
                     <a
@@ -390,6 +401,7 @@ export default function Home() {
 
                     </div>
                   </article>
+                  </Reveal>
                 ))}
               </div>
             </section>
@@ -397,9 +409,9 @@ export default function Home() {
 
 
 
-            <p>
+            <Reveal><p>
               If any of this seems interesting, feel free to reach out via LinkedIn or email (jh2liang@uwaterloo.ca) - I'd love to chat!
-            </p>
+            </p></Reveal>
 
 
 
