@@ -25,10 +25,18 @@ html {
      position: sticky opening scene. */
   overflow-x: clip;
   width: 100%;
+  /*
+     Kill the rubber-band bounce. Dragging past the top pulled the page down
+     and exposed the site background above the opening scene — and since that
+     background is a different shade from the painting's paper, the seam was
+     obvious. Also stops scroll chaining out of the page.
+  */
+  overscroll-behavior: none;
 }
 
 body {
   background: var(--background);
+  overscroll-behavior: none;
   color: var(--foreground);
   font-family: var(--font-lora), Georgia, serif;
   transition: background-color 0.3s ease, color 0.3s ease;
