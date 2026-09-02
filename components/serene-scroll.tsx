@@ -107,6 +107,17 @@ export function SereneScroll() {
   const pt = usePointer();
   const px = (v: number) => `${v.toFixed(2)}px`;
 
+  // Jump to the end of the scene, which is where the page content begins.
+  const scrollToContent = () => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({
+      top: el.offsetTop + el.offsetHeight,
+      behavior: reduce ? "auto" : "smooth",
+    });
+  };
+
   // depth: 0 = far, 1 = near. drives speed and mouse parallax.
   const depth = {
     moon: 0.08,
@@ -114,6 +125,8 @@ export function SereneScroll() {
     tree: 0.72,
     bank: 1,
   };
+
+  const introOpacity = 1 - easeIn(seg(p, 0.35, 0.75));
 
   // far layers linger and dissolve; near layers leave early and hard
   const moonP = easeOut(seg(p, 0.05, 1.0));
@@ -188,7 +201,8 @@ export function SereneScroll() {
           className="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-6 text-center"
           style={{
             transform: `translateY(${px(easeIn(seg(p, 0, 0.8)) * -90)})`,
-            opacity: 1 - easeIn(seg(p, 0.35, 0.75)),
+            opacity: introOpacity,
+            pointerEvents: introOpacity < 0.08 ? "none" : "auto",
           }}
         >
           <h1
@@ -203,25 +217,26 @@ export function SereneScroll() {
           >
             A software engineer building systems people want
           </p>
-        </div>
 
-        <div
-          className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
-          style={{ color: INK_MUTED, opacity: 1 - p * 6 }}
-        >
-          <span className="text-[13px] font-medium tracking-[0.28em] uppercase">Scroll</span>
-          <svg
-            className="animate-scroll-hint h-6 w-6"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.6}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
+          <button
+            type="button"
+            onClick={scrollToContent}
+            className="scene-cta mt-10 inline-flex items-center gap-3 rounded-full border px-7 py-3 text-[12px] font-medium tracking-[0.28em] uppercase"
           >
-            <path d="M12 4.5v13.5M6.5 12.5 12 18l5.5-5.5" />
-          </svg>
+            Scroll
+            <svg
+              className="animate-scroll-hint h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.6}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <path d="M12 4.5v13.5M6.5 12.5 12 18l5.5-5.5" />
+            </svg>
+          </button>
         </div>
 
         {/* hand the painting off to the page background at the end of the scene */}

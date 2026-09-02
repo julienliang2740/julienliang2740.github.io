@@ -94,3 +94,38 @@ body {
     object-position: 82% center;
   }
 }
+
+/*
+ * Scroll button on the opening scene. A hairline pill at rest so it reads as
+ * part of the ink drawing, filling to paper-white on hover/focus. Colours are
+ * fixed to the scene's own palette, not the theme tokens.
+ */
+.scene-cta {
+  color: oklch(0.36 0.02 55);
+  border-color: color-mix(in oklab, oklch(0.2 0.016 55) 30%, transparent);
+  background-color: transparent;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.scene-cta:hover,
+.scene-cta:focus-visible {
+  background-color: #fffdf7;
+  color: oklch(0.2 0.016 55);
+  border-color: color-mix(in oklab, oklch(0.2 0.016 55) 45%, transparent);
+  box-shadow: 0 8px 24px rgba(62, 52, 40, 0.12);
+}
+
+.scene-cta:focus-visible {
+  outline: 2px solid color-mix(in oklab, oklch(0.2 0.016 55) 55%, transparent);
+  outline-offset: 3px;
+}
+
+/* The arrow only breathes while the button is idle. */
+.scene-cta:hover .animate-scroll-hint {
+  animation-play-state: paused;
+  transform: translateY(2px);
+}
