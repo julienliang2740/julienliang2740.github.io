@@ -161,9 +161,22 @@ body {
 
 /* ---- Blog ambient backdrop -------------------------------------------- */
 
+/*
+ * Pinned to the LARGE viewport height and never to `vh`.
+ *
+ * A fixed box sized with `inset: 0` still resizes when mobile browser chrome
+ * hides on scroll, and every vh-based offset inside it recalculates with it —
+ * which made the whole scene lurch mid-scroll (the willow shifted 102px the
+ * moment the URL bar collapsed). `lvh` is the height with chrome hidden, so
+ * this box is the same size whether the bar is showing or not, and the layers
+ * inside are placed in % of that stable box. Nothing reflows while scrolling.
+ */
 .blog-scene {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100lvh;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
@@ -175,11 +188,11 @@ body {
   will-change: transform;
 }
 
-/* Willow anchored to the bottom-left corner, well clear of the text column. */
+/* Willow anchored low on the left, clear of the text column. */
 .blog-scene__tree {
   width: 104vw;
   left: -15vw;
-  bottom: -10vh;
+  top: 39%;
   opacity: calc(0.5 * var(--scene-intensity));
   /* The source art is cropped flat across the rock at its base; fading the
      bottom dissolves that straight edge instead of parking it on the page. */
@@ -191,7 +204,7 @@ body {
 .blog-scene__mountains {
   width: 88vw;
   right: -12vw;
-  top: 18vh;
+  top: 18%;
   opacity: calc(0.4 * var(--scene-intensity));
   mask-image: linear-gradient(to left, #000 70%, transparent 100%);
   animation: blog-drift 27s ease-in-out infinite;
@@ -216,21 +229,30 @@ body {
   filter: invert(1) hue-rotate(180deg) saturate(0.75) brightness(0.85);
 }
 
-/* Phones have no side margins to spare, so the scene retreats to a hint. */
+/*
+ * Phones: scaled so each subject actually reads at its full shape rather than
+ * a sliver poking in from the edge — the willow sits whole against the left,
+ * the mountains and village against the right.
+ */
 @media (max-width: 767px) {
+  /*
+   * Vertical offsets in vw, not % or vh. Viewport WIDTH cannot change while
+   * you scroll, so these resolve to the same pixel value whether the URL bar
+   * is showing or hidden — the scene is genuinely nailed down. Anything keyed
+   * to viewport height shifts the instant mobile chrome retracts.
+   */
   .blog-scene__tree {
-    width: 200vw;
-    left: -62vw;
-    bottom: -8vh;
-    opacity: calc(0.28 * var(--scene-intensity));
+    width: 164vw;
+    left: -6vw;
+    top: 96vw;
+    opacity: calc(0.42 * var(--scene-intensity));
   }
 
   .blog-scene__mountains {
-    width: 150vw;
-    right: -30vw;
-    /* clear of the post list, which starts high on a phone */
-    top: 32vh;
-    opacity: calc(0.26 * var(--scene-intensity));
+    width: 146vw;
+    right: -4vw;
+    top: 62vw;
+    opacity: calc(0.38 * var(--scene-intensity));
   }
 }
 
