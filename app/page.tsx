@@ -20,7 +20,7 @@ const profile: Profile = {
       and everything in between.
     </>,
     <>
-      I&apos;ve built systems for many projects and teams, most of which focus on backend systems, infrastructure, and applied AI.
+      Most of my work focuses on backend systems, infrastructure, and applied AI.
     </>,  
     <>
       Beyond coding, I&apos;m deeply passionate about history. I&apos;m currently reading {" "}
