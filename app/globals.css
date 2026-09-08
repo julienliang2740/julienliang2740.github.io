@@ -31,12 +31,16 @@
   /* Project cards: a leaf of paper laid on the scroll, not a UI panel. Warm
      and barely lighter than the page, with a hairline that only darkens under
      the cursor. */
-  --card-bg: rgba(250, 246, 238, 0.66);
-  --card-bg-hover: rgba(252, 249, 243, 0.9);
+  --card-bg: #f6f1e6;
+  --card-bg-hover: #fbf7ef;
   --card-border: rgba(62, 52, 40, 0.16);
   --card-border-hover: rgba(62, 52, 40, 0.34);
-  --card-shadow: 0 1px 2px rgba(62, 52, 40, 0.05);
-  --card-shadow-hover: 0 16px 34px -14px rgba(62, 52, 40, 0.32);
+  --card-shadow: 0 2px 5px -2px rgba(62, 52, 40, 0.16), 0 8px 20px -14px rgba(62, 52, 40, 0.3);
+  --card-shadow-hover: 0 4px 10px -3px rgba(62, 52, 40, 0.2), 0 20px 40px -18px rgba(62, 52, 40, 0.42);
+  --plate-bg: rgba(62, 52, 40, 0.05);
+  --plate-border: rgba(62, 52, 40, 0.18);
+  --paper-grain-opacity: 0.055;
+  --paper-grain-blend: multiply;
 
   --blog-willow: url("/scene/blog/willow.webp");
   --blog-blossom: url("/scene/blog/blossom.webp");
@@ -64,12 +68,18 @@
   --scene-cta-hover: #3d4d5e;
   --scene-cta-shadow: rgba(6, 10, 14, 0.35);
 
-  --card-bg: rgba(58, 73, 89, 0.5);
-  --card-bg-hover: rgba(66, 83, 101, 0.72);
+  /* Paper after dark is still paper — a sheet a shade lighter than the night
+     ground, not a translucent glass panel. */
+  --card-bg: #37455499;
+  --card-bg-hover: #41505fdd;
   --card-border: rgba(238, 242, 247, 0.14);
   --card-border-hover: rgba(238, 242, 247, 0.32);
-  --card-shadow: 0 1px 2px rgba(6, 10, 14, 0.3);
-  --card-shadow-hover: 0 16px 34px -14px rgba(6, 10, 14, 0.6);
+  --card-shadow: 0 2px 5px -2px rgba(6, 10, 14, 0.5), 0 8px 20px -14px rgba(6, 10, 14, 0.7);
+  --card-shadow-hover: 0 4px 10px -3px rgba(6, 10, 14, 0.55), 0 20px 40px -18px rgba(6, 10, 14, 0.8);
+  --plate-bg: rgba(238, 242, 247, 0.06);
+  --plate-border: rgba(238, 242, 247, 0.16);
+  --paper-grain-opacity: 0.05;
+  --paper-grain-blend: screen;
 
   --scene-background: url("/scene/night/background.webp");
   --scene-moon: url("/scene/night/moon.webp");
@@ -443,65 +453,178 @@ body {
   }
 }
 
-/* ---- Project cards ------------------------------------------------------ */
+/* ---- Paper ------------------------------------------------------------- */
 
 /*
- * A card is a leaf of paper set on the scroll. Everything about the resting
- * state is quiet — the lift, the darker hairline and the warmer paper only
- * arrive under the cursor, so a screen of them reads as one calm block rather
- * than eight things shouting.
+ * A project is a sheet of paper laid on the scroll, not a UI panel. The sheet
+ * itself is painted by a pseudo-element behind the content so the deckle
+ * filter can rough up its edge without warping the words and screenshots
+ * sitting on top of it. Rounded rectangles and crisp drop shadows were what
+ * made the previous pass read as a dashboard rather than an album page.
  */
-.proj-card {
+.paper {
+  position: relative;
+  isolation: isolate;
+}
+
+.paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  border-radius: 2px;
   background: var(--card-bg);
-  border: 1px solid var(--card-border);
   box-shadow: var(--card-shadow);
+  filter: url(#paper-deckle);
   transition:
-    transform 420ms cubic-bezier(0.16, 0.7, 0.3, 1),
-    box-shadow 420ms cubic-bezier(0.16, 0.7, 0.3, 1),
-    border-color 420ms ease,
-    background-color 420ms ease;
+    background-color 500ms ease,
+    box-shadow 500ms ease;
+}
+
+/* Fibre. Barely there — enough that the fill is not a flat swatch. */
+.paper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--paper-grain-opacity);
+  mix-blend-mode: var(--paper-grain-blend);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* The screenshot is a print mounted on the sheet, with paper left around it. */
+.paper-plate {
+  overflow: hidden;
+  border: 1px solid var(--plate-border);
+  background: var(--plate-bg);
+}
+
+.paper-shot {
+  transition: transform 700ms cubic-bezier(0.16, 0.7, 0.3, 1);
+}
+
+/* An ink stroke that draws itself under the title as the sheet comes alive. */
+.paper-rule {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 520ms cubic-bezier(0.16, 0.7, 0.3, 1);
 }
 
 @media (hover: hover) {
-  .proj-card:hover {
-    transform: translateY(-6px);
+  .paper-lift:hover::before {
     background: var(--card-bg-hover);
-    border-color: var(--card-border-hover);
     box-shadow: var(--card-shadow-hover);
   }
-
-  .proj-card:hover .proj-shot {
-    transform: scale(1.05);
+  .paper-lift:hover .paper-shot {
+    transform: scale(1.04);
   }
-
-  /* The rule under the title draws itself across as the card comes alive. */
-  .proj-card:hover .proj-rule {
+  .paper-lift:hover .paper-rule {
     transform: scaleX(1);
   }
 }
 
-.proj-card:focus-visible {
+.paper-lift {
+  transition: transform 460ms cubic-bezier(0.16, 0.7, 0.3, 1);
+}
+
+@media (hover: hover) {
+  .paper-lift:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.paper-lift:focus-visible {
   outline: 2px solid color-mix(in oklab, var(--foreground) 55%, transparent);
-  outline-offset: 3px;
+  outline-offset: 4px;
 }
 
-.proj-shot {
-  transition: transform 620ms cubic-bezier(0.16, 0.7, 0.3, 1);
+/* ---- The deck ---------------------------------------------------------- */
+
+/*
+ * Featured projects are one sheet with the rest stacked behind it, fanned
+ * slightly the way a handful of paper never sits square. Advance it by
+ * dragging, by the arrows, by the dots, or with the arrow keys.
+ */
+.deck {
+  position: relative;
+  touch-action: pan-y; /* vertical scrolling stays the page's, sideways is ours */
+
+  /* How far the pile fans. A fixed offset put the peeking sheets past the
+     right edge of a phone, where the page's overflow clip ate them, so the
+     stack read as a single lonely card. */
+  --fan-x: 15px;
+  --fan-y: 9px;
+  --fan-r: 1.6deg;
 }
 
-.proj-rule {
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 480ms cubic-bezier(0.16, 0.7, 0.3, 1);
+@media (min-width: 640px) {
+  .deck {
+    --fan-x: 26px;
+    --fan-y: 13px;
+    --fan-r: 2.3deg;
+  }
+}
+
+.deck-sheet {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 90%;
+  transition:
+    transform 620ms cubic-bezier(0.22, 0.7, 0.25, 1),
+    opacity 620ms cubic-bezier(0.22, 0.7, 0.25, 1);
+}
+
+/* Mid-drag the sheet must track the finger exactly, with no easing lag. */
+.deck-sheet[data-dragging] {
+  transition: none;
+}
+
+.deck-dot {
+  height: 7px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.28;
+  width: 7px;
+  transition:
+    width 420ms cubic-bezier(0.16, 0.7, 0.3, 1),
+    opacity 420ms ease;
+}
+
+.deck-dot[data-on] {
+  width: 24px;
+  opacity: 0.75;
+}
+
+.deck-arrow {
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    opacity 300ms ease;
+}
+
+.deck-arrow:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+@media (hover: hover) {
+  .deck-arrow:not(:disabled):hover {
+    background: var(--card-bg-hover);
+    border-color: var(--card-border-hover);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .proj-card,
-  .proj-shot,
-  .proj-rule {
+  .paper-lift,
+  .paper-shot,
+  .paper-rule,
+  .deck-sheet,
+  .deck-dot,
+  .deck-arrow {
     transition: none;
   }
-  .proj-rule {
+  .paper-rule {
     transform: scaleX(1);
   }
 }
