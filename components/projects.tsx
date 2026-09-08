@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { flushSync } from "react-dom";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
 
@@ -49,12 +50,15 @@ function PaperFilter() {
   );
 }
 
-function Chips({ tech, max }: { tech: TechItem[]; max?: number }) {
-  const shown = max ? tech.slice(0, max) : tech;
-  const extra = max ? tech.length - shown.length : 0;
+/*
+ * Every item, always. This used to cap the list and append a "+3", which says
+ * nothing to someone reading the site — they cannot tell whether the hidden
+ * three are languages, clouds or nothing much, and there is no way to see them.
+ */
+function Chips({ tech }: { tech: TechItem[] }) {
   return (
     <div className="flex flex-wrap gap-1.5">
-      {shown.map((t, i) => (
+      {tech.map((t, i) => (
         <span
           key={`${label(t)}-${i}`}
           className={`border border-current/20 px-2 py-0.5 text-[0.78rem] tracking-wide ${
@@ -64,9 +68,6 @@ function Chips({ tech, max }: { tech: TechItem[]; max?: number }) {
           {label(t)}
         </span>
       ))}
-      {extra > 0 && (
-        <span className="px-1 py-0.5 text-[0.78rem] opacity-50">+{extra}</span>
-      )}
     </div>
   );
 }
@@ -89,17 +90,7 @@ function Arrow() {
 }
 
 /** A featured sheet: the screenshot mounted as a print, words underneath. */
-function Sheet({
-  project,
-  index,
-  total,
-  active,
-}: {
-  project: Project;
-  index: number;
-  total: number;
-  active: boolean;
-}) {
+function Sheet({ project, active }: { project: Project; active: boolean }) {
   return (
     <a
       href={project.href}
@@ -120,20 +111,12 @@ function Sheet({
         letting their screenshots peek out of the stack turned the fan into a
         row of dimmed thumbnails instead of a pile of pages.
       */}
-      <div
-        className="flex h-full flex-col transition-opacity"
-        style={{
-          opacity: active ? 1 : 0,
-          /*
-           * Asymmetric on purpose. Fading both faces at the same rate left the
-           * two sheets double-exposed through the middle of the swap, one set
-           * of words showing through the other. The old face leaves at once and
-           * the new one waits until the sheets have travelled.
-           */
-          transitionDuration: active ? "360ms" : "180ms",
-          transitionDelay: active ? "240ms" : "0ms",
-        }}
-      >
+      {/*
+        No transition on the face. The view transition dissolves the whole pile
+        from one arrangement to the next, so fading each face separately on top
+        of that only reintroduced the blank beat it exists to remove.
+      */}
+      <div className="flex h-full flex-col" style={{ opacity: active ? 1 : 0 }}>
       <div className="paper-plate">
         <Image
           src={project.imageSrc}
@@ -145,19 +128,15 @@ function Sheet({
         />
       </div>
       <div className="mt-4 flex flex-1 flex-col">
-        <span className="text-[0.68rem] tracking-[0.3em] opacity-40">
-          {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-        </span>
-        <h3 className="mt-1.5 flex items-center gap-2 text-xl font-semibold leading-tight sm:text-[1.65rem]">
+        <h3 className="flex items-center gap-2 text-xl font-semibold leading-tight sm:text-[1.65rem]">
           {project.title}
           <Arrow />
         </h3>
-        <div className="paper-rule mt-2 h-px w-12 bg-current/45" />
         <p className="mt-3 flex-1 text-base leading-relaxed opacity-80">
           {project.description}
         </p>
         <div className="mt-4">
-          <Chips tech={project.tech} max={5} />
+          <Chips tech={project.tech} />
         </div>
       </div>
       </div>
@@ -178,12 +157,11 @@ function Slip({ project }: { project: Project }) {
         {project.title}
         <Arrow />
       </h3>
-      <div className="paper-rule mt-1.5 h-px w-8 bg-current/45" />
       <p className="mt-2 flex-1 text-[0.9rem] leading-relaxed opacity-75">
         {project.description}
       </p>
       <div className="mt-3">
-        <Chips tech={project.tech} max={3} />
+        <Chips tech={project.tech} />
       </div>
     </a>
   );
@@ -234,8 +212,53 @@ function Deck({ projects }: { projects: Project[] }) {
   const swiped = useRef(false);
   const deckRef = useRef<HTMLDivElement>(null);
 
+  const stageRef = useRef<HTMLDivElement>(null);
+  /* True while a swap is mid-flight, so a gesture cannot stack another on top. */
+  const swapping = useRef(false);
+
+  /*
+   * The swap is the same cross-fade one page makes into the next: the browser
+   * holds a snapshot of the pile as it stands and dissolves it straight into
+   * the new arrangement, both on screen together.
+   *
+   * It replaces a hand-rolled fade of each sheet's face, which put a beat of
+   * blank paper between the two — so going from a dark game screenshot to a
+   * white app screenshot flashed the page ground in between. Sliding the
+   * sheets during the swap is off for the same reason: the snapshot has to be
+   * of the settled arrangement, not of one caught mid-travel.
+   */
   const go = useCallback(
-    (d: number) => setActive((a) => Math.min(Math.max(a + d, 0), total - 1)),
+    (d: number) => {
+      const doc = document as Document & {
+        startViewTransition?: (cb: () => void | Promise<void>) => unknown;
+      };
+      const commit = () => setActive((a) => Math.min(Math.max(a + d, 0), total - 1));
+      const stage = stageRef.current;
+      if (
+        typeof doc.startViewTransition !== "function" ||
+        !stage ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        commit();
+        return;
+      }
+
+      stage.dataset.swapping = "";
+      swapping.current = true;
+      const done = () => {
+        delete stage.dataset.swapping;
+        swapping.current = false;
+      };
+      const vt = doc.startViewTransition(
+        () =>
+          new Promise<void>((resolve) => {
+            flushSync(commit);
+            resolve();
+          }),
+      ) as { finished?: Promise<unknown> };
+      if (vt?.finished) vt.finished.then(done, done);
+      else window.setTimeout(done, 600);
+    },
     [total],
   );
   const atStart = active === 0;
@@ -264,7 +287,12 @@ function Deck({ projects }: { projects: Project[] }) {
   useEffect(() => {
     const el = deckRef.current;
     if (!el) return;
-    const COMMIT = 90; // px of travel that counts as a sheet
+    /*
+     * Travel that counts as a sheet. 90 was a light flick — the deck moved
+     * before the gesture felt finished, which read as oversensitive rather
+     * than quick. This asks for a deliberate push.
+     */
+    const COMMIT = 165;
     let acc = 0;
     let armed = true;
     let lastDelta = 0;
@@ -280,8 +308,24 @@ function Deck({ projects }: { projects: Project[] }) {
       e.preventDefault();
 
       const now = e.timeStamp;
+      const gap = now - lastAt;
+      lastAt = now;
+
+      /*
+       * A view transition freezes painting for its duration but wheel events
+       * keep arriving. Left alone they pile up and the pause reads as a gap in
+       * the stream, which re-arms the gesture and lets one hard flick spend a
+       * second sheet the moment the swap lands. Hold the gesture spent instead.
+       */
+      if (swapping.current) {
+        lastDelta = dx;
+        armed = false;
+        acc = 0;
+        return;
+      }
+
       if (
-        now - lastAt > 120 || // the stream stopped and started again
+        gap > 120 || // the stream stopped and started again
         (!armed && Math.abs(dx) > Math.abs(lastDelta) + 1.5) || // a fresh push
         (!armed && now - disarmedAt > 500 && Math.abs(dx) >= 6) // still pushing
       ) {
@@ -289,7 +333,6 @@ function Deck({ projects }: { projects: Project[] }) {
         acc = 0;
       }
       lastDelta = dx;
-      lastAt = now;
       if (!armed) return; // swallowing the tail of a gesture already spent
 
       acc += dx;
@@ -360,9 +403,15 @@ function Deck({ projects }: { projects: Project[] }) {
         if (e.key === "ArrowLeft") go(-1);
       }}
     >
+      {/*
+        The stage exists so the arrows can sit beside the deck without being
+        inside the drag surface — a press on an arrow would otherwise open a
+        gesture on the pile.
+      */}
+      <div ref={stageRef} className="deck-stage mx-auto w-[calc(100%-2rem)] max-w-[620px] sm:w-full">
       <div
         ref={deckRef}
-        className="deck mx-auto h-[496px] w-[calc(100%-2rem)] max-w-[620px] cursor-grab select-none active:cursor-grabbing sm:h-[498px] sm:w-full"
+        className="deck h-[458px] w-full cursor-grab select-none active:cursor-grabbing sm:h-[466px]"
         onPointerDown={onDown}
         onPointerMove={onMove}
         onPointerUp={onUp}
@@ -383,13 +432,15 @@ function Deck({ projects }: { projects: Project[] }) {
             data-dragging={i === active && offset !== 0 ? "" : undefined}
             style={sheetStyle(i - active, i === active ? offset : 0)}
           >
-            <Sheet project={p} index={i} total={total} active={i === active} />
+            <Sheet project={p} active={i === active} />
           </div>
         ))}
       </div>
-
-      <div className="mt-7 flex items-center justify-center gap-5">
         <DeckArrow dir={-1} disabled={atStart} onClick={() => go(-1)} />
+        <DeckArrow dir={1} disabled={atEnd} onClick={() => go(1)} />
+      </div>
+
+      <div className="mt-7 flex items-center justify-center">
         <div className="flex items-center gap-2">
           {projects.map((p, i) => (
             <button
@@ -403,7 +454,6 @@ function Deck({ projects }: { projects: Project[] }) {
             />
           ))}
         </div>
-        <DeckArrow dir={1} disabled={atEnd} onClick={() => go(1)} />
       </div>
     </div>
   );
@@ -424,7 +474,7 @@ function DeckArrow({
       onClick={onClick}
       disabled={disabled}
       aria-label={dir === 1 ? "Next project" : "Previous project"}
-      className="deck-arrow flex h-9 w-9 items-center justify-center rounded-full"
+      className={`deck-arrow deck-nav deck-nav--${dir === 1 ? "next" : "prev"} flex h-9 w-9 items-center justify-center rounded-full`}
     >
       <svg
         className="h-4 w-4"
@@ -478,14 +528,8 @@ export function Projects({ projects }: { projects: Project[] }) {
             </div>
           ) : (
             <div className="mt-9 grid gap-5 sm:grid-cols-2 md:grid-cols-3">
-              {featured.map((p, i) => (
-                <Sheet
-                  key={p.title}
-                  project={p}
-                  index={i}
-                  total={featured.length}
-                  active
-                />
+              {featured.map((p) => (
+                <Sheet key={p.title} project={p} active />
               ))}
             </div>
           )}

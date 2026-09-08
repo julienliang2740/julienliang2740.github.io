@@ -675,8 +675,84 @@ body {
   opacity: 0.75;
 }
 
+.deck-stage {
+  position: relative;
+}
+
+/*
+ * Named only while a swap is running. A permanent name would pull the deck out
+ * as its own group on every page and theme transition too, animating it apart
+ * from the page it sits on.
+ */
+.deck-stage[data-swapping] {
+  view-transition-name: project-deck;
+}
+
+/* The snapshot must be of the settled pile, not of one caught mid-slide. */
+.deck-stage[data-swapping] .deck-sheet {
+  transition: none;
+}
+
+::view-transition-old(project-deck),
+::view-transition-new(project-deck) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*
+ * Arrows flank the pile rather than sitting under it. There is only room for
+ * them outside the sheet on a wide screen: at 768px the column is 640px and
+ * the deck fills 620 of it, so below that they ride the sheet's edge, level
+ * with the screenshot, which is where a reader looks for them anyway.
+ */
+.deck-nav {
+  position: absolute;
+  top: 106px;
+  z-index: 40;
+}
+
+/* Inset to the sheet's own padding, so an overlaid arrow sits within the
+   screenshot rather than straddling the paper's deckled edge. */
+.deck-nav--prev {
+  left: 14px;
+}
+
+.deck-nav--next {
+  right: 14px;
+}
+
+@media (min-width: 640px) {
+  .deck-nav {
+    top: 148px;
+  }
+  .deck-nav--prev {
+    left: 22px;
+  }
+  .deck-nav--next {
+    right: 22px;
+  }
+}
+
+@media (min-width: 880px) {
+  .deck-nav {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .deck-nav--prev {
+    left: -58px;
+  }
+  .deck-nav--next {
+    right: -58px;
+  }
+}
+
 .deck-arrow {
+  cursor: pointer;
   border: 1px solid var(--rule-strong);
+  /* Legible whether it is sitting on the page or riding over a screenshot. */
+  background: color-mix(in srgb, var(--background) 78%, transparent);
+  backdrop-filter: blur(6px);
+  color: var(--foreground);
   transition:
     background-color 300ms ease,
     border-color 300ms ease,
