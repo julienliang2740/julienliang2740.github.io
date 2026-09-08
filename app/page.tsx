@@ -3,30 +3,12 @@ import { Navbar } from "@/components/navbar";
 import { SereneScroll } from "@/components/serene-scroll";
 import { AmbientScene } from "@/components/ambient-scene";
 import { Reveal } from "@/components/reveal";
-
-type TechItem = string | { label: string; crossedOut?: boolean };
-
-type Project = {
-  title: string;
-  description: string;
-  href: string;
-  imageSrc: string;
-  imageAlt: string;
-  tech: TechItem[];
-};
+import { Projects, type Project } from "@/components/projects";
 
 const projects: Project[] = [
   {
-    title: "Remy",
-    description:
-      "An AI kitchen coach that takes you from random ingredients in the fridge to simple meals and grocery savings.",
-    href: "https://github.com/julienliang2740/remy-agent-layer",
-    imageSrc: "/remy.png",
-    imageAlt: "Remy project preview",
-    tech: ["Python", "TypeScript", "MediaPipe", "Cloudflare D1 + R2"],
-  },
-  {
     title: "PolyTerminal",
+    featured: true,
     description:
       "A PvP strategy, predictions, and data visualization platform for Polytopia players to optimize game performance.",
     href: "https://polyterminator.com/",
@@ -43,13 +25,33 @@ const projects: Project[] = [
     ],
   },
   {
+    title: "Remy",
+    featured: true,
+    description:
+      "An AI kitchen coach that takes you from random ingredients in the fridge to simple meals and grocery savings.",
+    href: "https://github.com/julienliang2740/remy-agent-layer",
+    imageSrc: "/remy.png",
+    imageAlt: "Remy project preview",
+    tech: ["Python", "TypeScript", "MediaPipe", "Cloudflare D1 + R2"],
+  },
+  {
     title: "Sekoa AI",
+    featured: true,
     description:
       "AI-Native Marketing Agency creating UGC promotional content for business users.",
     href: "https://sekoa.ai/",
     imageSrc: "/sekoa.png",
     imageAlt: "Sekoa AI project preview",
     tech: ["Python", "TypeScript", "Supabase", "Cloudflare R2"],
+  },
+  {
+    title: "Sparkflow",
+    description:
+      "An AI mentor that crafts interactive lessons built from scratch for each student.",
+    href: "https://sparkflowlearn.pages.dev/",
+    imageSrc: "/sparkflow-logo.png",
+    imageAlt: "Sparkflow project preview",
+    tech: ["TypeScript", "React", "Cloudflare Pages"],
   },
   {
     title: "Studytype",
@@ -117,18 +119,6 @@ export default function Home() {
 
               <p>
                 I am currently a software engineer at <strong>Cloudflare</strong> building gateway filtering and routing for MCPs, WARP, and more.
-                <br></br>
-                Outside of work I&apos;m building { " " }
-                <strong>
-                  <a
-                    href="https://sparkflowlearn.pages.dev/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline hover:opacity-70 transition-opacity"
-                  >
-                    Sparkflow
-                  </a>
-                </strong>, an AI mentor that crafts personalized lessons for students.
               </p>
             </div>
 
@@ -178,45 +168,6 @@ export default function Home() {
                       data analysis tools
                     </a>
                   </strong> */}
-
-              <Reveal>
-              <a
-                href="https://sparkflowlearn.pages.dev/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group/spark flex items-center gap-4 rounded-xl border border-current/20 bg-current/5 px-5 py-4 transition-colors hover:border-current/40 hover:bg-current/10"
-              >
-                <Image
-                  src="/sparkflow-logo.png"
-                  alt="Sparkflow logo"
-                  width={56}
-                  height={56}
-                  className="shrink-0 rounded-lg border border-current/10"
-                />
-                <div className="min-w-0">
-                  <span className="flex items-center gap-1.5 text-lg font-semibold">
-                    Check out Sparkflow
-                    <svg
-                      className="w-4 h-4 transition-transform duration-200 group-hover/spark:translate-x-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.5 4.5 21 12l-7.5 7.5M21 12H3"
-                      />
-                    </svg>
-                  </span>
-                  <p className="text-sm opacity-70">
-                    A personal AI mentor that crafts interactive lessons built
-                    from scratch for each student.
-                  </p>
-                </div>
-              </a>
-              </Reveal>
 
               <Reveal>
               <details className="group">
@@ -340,71 +291,7 @@ export default function Home() {
 
 
 
-            <section className="pt-8">
-              <Reveal>
-                <h2 className="text-2xl md:text-3xl font-semibold tracking-[0.22em] uppercase">
-                  Projects
-                </h2>
-                <div className="mt-5 border-t border-dashed border-current/40" />
-              </Reveal>
-
-              <div className="mt-8 space-y-8">
-                {projects.map((project, projectIndex) => (
-                  <Reveal key={project.title} delay={(projectIndex % 2) * 90}>
-                  <article
-                    className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 items-start"
-                  >
-                    <a
-                      href={project.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block w-full overflow-hidden rounded-xl border border-current/20 hover:opacity-85 transition-opacity"
-                    >
-                      <Image
-                        src={project.imageSrc}
-                        alt={project.imageAlt}
-                        width={600}
-                        height={340}
-                        className="h-[190px] w-full object-cover"
-                      />
-                    </a>
-
-                    <div className="space-y-3">
-                      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-                        <h3 className="text-xl md:text-2xl font-semibold leading-tight">
-                          {project.title}
-                        </h3>
-                        <div className="flex flex-wrap gap-2">
-                          {project.tech.map((tech, index) => {
-                            const label =
-                              typeof tech === "string" ? tech : tech.label;
-                            const crossedOut =
-                              typeof tech !== "string" && tech.crossedOut;
-
-                            return (
-                              <span
-                                key={`${project.title}-${label}-${index}`}
-                                className={`rounded-md border border-current/15 bg-current/5 px-2.5 py-0.5 text-sm ${
-                                  crossedOut
-                                    ? "line-through decoration-2 decoration-current/70"
-                                    : ""
-                                }`}
-                              >
-                                {label}
-                              </span>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      <p>{project.description}</p>
-
-                    </div>
-                  </article>
-                  </Reveal>
-                ))}
-              </div>
-            </section>
+            <Projects projects={projects} />
 
 
 
