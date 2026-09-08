@@ -650,12 +650,13 @@ body {
   inset: 0;
   transform-origin: 50% 90%;
   transition:
-    transform 620ms cubic-bezier(0.22, 0.7, 0.25, 1),
-    opacity 620ms cubic-bezier(0.22, 0.7, 0.25, 1);
+    transform 560ms cubic-bezier(0.22, 0.72, 0.24, 1),
+    opacity 560ms cubic-bezier(0.22, 0.72, 0.24, 1);
 }
 
 /* Mid-drag the sheet must track the finger exactly, with no easing lag. */
-.deck-sheet[data-dragging] {
+/* Mid-drag every sheet must track the finger exactly, not just the top one. */
+.deck[data-dragging] .deck-sheet {
   transition: none;
 }
 
@@ -680,69 +681,57 @@ body {
 }
 
 /*
- * Named only while a swap is running. A permanent name would pull the deck out
- * as its own group on every page and theme transition too, animating it apart
- * from the page it sits on.
+ * The face of each sheet is driven by its position, so it fades as part of the
+ * same motion rather than on a timer of its own.
  */
-.deck-stage[data-swapping] {
-  view-transition-name: project-deck;
+.deck-sheet > a > div {
+  transition: opacity 560ms cubic-bezier(0.22, 0.72, 0.24, 1);
 }
 
-/* The snapshot must be of the settled pile, not of one caught mid-slide. */
-.deck-stage[data-swapping] .deck-sheet {
+.deck[data-dragging] .deck-sheet > a > div {
   transition: none;
 }
 
-::view-transition-old(project-deck),
-::view-transition-new(project-deck) {
-  animation-duration: 380ms;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+.deck-controls {
+  /*
+   * Clears the pile, not the deck's box. The fanned sheets sit lower than the
+   * front one and their rotated corners drop further still, so a row tucked up
+   * close to the box collided with a sheet even though it looked clear of the
+   * card being read.
+   */
+  margin-top: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
 }
 
 /*
- * Arrows flank the pile rather than sitting under it. There is only room for
- * them outside the sheet on a wide screen: at 768px the column is 640px and
- * the deck fills 620 of it, so below that they ride the sheet's edge, level
- * with the screenshot, which is where a reader looks for them anyway.
+ * From 1024px up the arrows leave the row and stand beside the pile. The offset
+ * clears the fan, not just the front sheet: the sheets behind reach 52px past
+ * the deck's edge, so an arrow tucked closer than that sits on a corner of one
+ * — which is the overlap this is meant to avoid. Below 1024 they stay in the
+ * row, because there is no room for an arrow beside a card still wide enough
+ * to read.
  */
-.deck-nav {
-  position: absolute;
-  top: 106px;
-  z-index: 40;
-}
+@media (min-width: 1024px) {
+  .deck-controls {
+    gap: 0;
+  }
 
-/* Inset to the sheet's own padding, so an overlaid arrow sits within the
-   screenshot rather than straddling the paper's deckled edge. */
-.deck-nav--prev {
-  left: 14px;
-}
-
-.deck-nav--next {
-  right: 14px;
-}
-
-@media (min-width: 640px) {
   .deck-nav {
-    top: 148px;
-  }
-  .deck-nav--prev {
-    left: 22px;
-  }
-  .deck-nav--next {
-    right: 22px;
-  }
-}
-
-@media (min-width: 880px) {
-  .deck-nav {
+    position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    z-index: 40;
   }
+
   .deck-nav--prev {
-    left: -58px;
+    right: calc(100% + 60px);
   }
+
   .deck-nav--next {
-    right: -58px;
+    left: calc(100% + 60px);
   }
 }
 

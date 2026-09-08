@@ -101,7 +101,7 @@ const projects: Project[] = [
   {
     title: "UTMIST & Lovelytics",
     description:
-      "An intelligent task automation system that leverages Large Language Models (LLMs) to help business users automate complex workflows without requiring technical expertise.",
+      "An LLM task automation system for business users to build complex workflows without writing code.",
     href: "https://github.com/julienliang2740/Lovelytics",
     imageSrc: "/new_lovelytics.png",
     imageAlt: "Business automation project preview",
@@ -110,7 +110,7 @@ const projects: Project[] = [
   {
     title: "CivilizAgent",
     description:
-      "A historical simulation program powered by an LLM multi-agent system, modelling both interactions between countries and internal politics.",
+      "An LLM multi-agent historical simulation, modelling diplomacy between countries and their internal politics.",
     href: "https://github.com/julienliang2740/CivilizAgent-Demo",
     imageSrc: "/civilizagent.png",
     imageAlt: "Multi-agent simulation project preview",
