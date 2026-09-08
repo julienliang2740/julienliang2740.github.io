@@ -1,9 +1,45 @@
-import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { SereneScroll } from "@/components/serene-scroll";
 import { AmbientScene } from "@/components/ambient-scene";
+import { Intro, type Profile, type Role } from "@/components/intro";
 import { Reveal } from "@/components/reveal";
 import { Projects, type Project } from "@/components/projects";
+
+/*
+ * Everything the page says lives in these three lists. Adding a role, swapping
+ * the portrait or promoting a project is an edit here — the components below
+ * take it from there.
+ */
+
+const profile: Profile = {
+  photo: { src: "/new_headshot_square.jpg", alt: "Julien Liang" },
+  lead: [
+    <>
+      I&apos;m a <strong>Computer Science</strong> student at the University of
+      Waterloo building software for startups, enterprise-scale applications,
+      and everything in between.
+    </>,
+    <>
+      I am currently a software engineer at <strong>Cloudflare</strong> building
+      gateway filtering and routing for MCPs, WARP, and more.
+    </>,
+  ],
+  aside: (
+    <>
+      Beyond software, I&apos;m deeply passionate about history. I&apos;ve read
+      everything from recent works such as{" "}
+      <em>1587, a Year of No Significance</em> to 12th-century writings like{" "}
+      <em>Ten Essays on Defence</em>.
+    </>
+  ),
+};
+
+const experience: Role[] = [
+  { org: "Cloudflare", title: "SWE, Gateway Routing and Filtering", period: "Summer 2026" },
+  { org: "Cisco", title: "SWE, IOS XR Simulation Platforms + Agentic Services", period: "Summer 2025" },
+  { org: "Ford", title: "SWE, IPC/HMI", period: "Winter 2025" },
+  { org: "Blackberry QNX", title: "SWE, RTOS File System", period: "Summer 2024" },
+];
 
 const projects: Project[] = [
   {
@@ -108,201 +144,24 @@ export default function Home() {
 
       <SereneScroll />
 
-      <div id="page-content" className="relative z-10 -mt-[38svh] px-8 pb-16 pt-24 md:px-16 lg:px-24">
-        <div className="max-w-3xl mx-auto">
-          <Reveal className="mb-12">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_260px] md:items-start">
-            <div className="space-y-6 text-lg leading-relaxed md:order-1">
-              <p>
-                I&apos;m a <strong>Computer Science</strong> student at the University of Waterloo building software for startups, enterprise-scale applications, and everything in between.
-              </p>
+      <div
+        id="page-content"
+        className="relative z-10 -mt-[38svh] px-8 pb-16 pt-24 md:px-16 lg:px-24"
+      >
+        <div className="mx-auto max-w-3xl">
+          <Intro profile={profile} experience={experience} />
 
-              <p>
-                I am currently a software engineer at <strong>Cloudflare</strong> building gateway filtering and routing for MCPs, WARP, and more.
-              </p>
-            </div>
-
-            <Image
-              src="/new_headshot_square.jpg"
-              alt="Julien Liang"
-              width={520}
-              height={650}
-              className="w-full max-w-[260px] justify-self-center rounded-xl border border-current/15 object-cover aspect-[4/5] md:order-2 md:justify-self-end"
-              priority
-            />
-            </div>
-          </Reveal>
-
-          <div className="space-y-6 text-lg leading-relaxed">
-            <div className="space-y-4">
-                {/* I&apos;ve also built everything from { " " } 
-                  <strong>
-                    <a
-                      href="https://sekoa.ai/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:opacity-70 transition-opacity"
-                    >
-                      AI marketing platforms
-                    </a>
-                  </strong> to 
-                  { " " }
-                  <strong>
-                    <a
-                      href="https://remy-23d.pages.dev/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:opacity-70 transition-opacity"
-                    >
-                      kitchen copilot agents
-                    </a>
-                  </strong> and 
-                  { " " }
-                  <strong>
-                    <a
-                      href="https://polyterminator.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:opacity-70 transition-opacity"
-                    >
-                      data analysis tools
-                    </a>
-                  </strong> */}
-
-              <Reveal>
-              <details className="group">
-                <summary className="cursor-pointer list-none flex items-center gap-1.5 hover:opacity-70 transition-opacity">
-                  <svg
-                    className="w-4 h-4 transition-transform duration-200 group-open:rotate-90"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                  Work Experience
-                </summary>
-                <ul className="list-disc list-inside space-y-1 ml-6 mt-2">
-                  <li>
-                    <strong>Cloudflare</strong> — SWE, Gateway Routing and Filtering (Summer 2026)
-                  </li>
-                  <li>
-                    <strong>Cisco</strong> — SWE, IOS XR Simulation Platforms + Agentic Services (Summer 2025)
-                  </li>
-                  <li>
-                    <strong>Ford</strong> — SWE, IPC/HMI (Winter 2025)
-                  </li>
-                  <li>
-                    <strong>Blackberry QNX</strong> — SWE, RTOS File System (Summer 2024)
-                  </li>
-                </ul>
-              </details>
-              </Reveal>
-
-              <Reveal>
-              <details className="group">
-                <summary className="cursor-pointer list-none flex items-center gap-1.5 hover:opacity-70 transition-opacity">
-                  <svg
-                    className="w-4 h-4 transition-transform duration-200 group-open:rotate-90"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                  Research + Projects
-                </summary>
-                <ul className="list-disc list-inside space-y-1 ml-6 mt-2">
-                  <li>
-                    <strong>
-                      <a
-                        href="https://sekoa.ai/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline hover:opacity-70 transition-opacity"
-                      >
-                        Sekoa AI
-                      </a>
-                    </strong> — AI-Native Marketing Agency
-                  </li>
-                  <li>
-                    <strong>
-                      <a
-                        href="https://remy-23d.pages.dev/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline hover:opacity-70 transition-opacity"
-                      >
-                        Remy
-                      </a>
-                    </strong> — Agentic Kitchen/Cooking Copilot
-                  </li>
-                  <li>
-                    <strong>
-                      <a
-                        href="https://polyterminator.com/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline hover:opacity-70 transition-opacity"
-                      >
-                        PolyTerminal
-                      </a>
-                    </strong> — PolyTopia PvP Predictions and Data Visualization Tool
-                  </li>
-                  <li>
-                    <strong>UofT Machine Intelligence Team</strong> — Intelligent Task Automation
-                  </li>
-                  <li>
-                    <strong>Stanford University</strong> — Multi-Agent Simulations
-                  </li>
-                </ul>
-              </details>
-              </Reveal>
-            </div>
-
-            {/* <p>
-              I've built across many areas in the past, with special focus on:
-            </p>
-
-            <ul className="list-disc list-inside space-y-2 ml-4">
-              <li>Backend application systems</li>
-              <li>Agentic Services and Applied AI</li>
-              <li>Data platforms and analytics</li>
-              <li>Distributed systems</li>
-            </ul> */}
-
-            <Reveal><p>
-              Beyond software, I'm deeply passionate about history. I've read everything from
-              recent works such as <em>1587, a Year of No Significance</em> { " " }
-              to 12th-century writings like <em>Ten Essays on Defence</em>.
-              {/* (美芹十论) */}
-            </p></Reveal>
-
-
-
-
+          <div className="pt-16">
             <Projects projects={projects} />
-
-
-
-
-            <Reveal><p>
-              If any of this seems interesting, feel free to reach out via LinkedIn or email (jh2liang@uwaterloo.ca) - I'd love to chat!
-            </p></Reveal>
-
-
-
           </div>
+
+          <Reveal>
+            <p className="pt-14 text-lg leading-relaxed">
+              If any of this seems interesting, feel free to reach out via
+              LinkedIn or email (jh2liang@uwaterloo.ca) &mdash; I&apos;d love to
+              chat!
+            </p>
+          </Reveal>
         </div>
       </div>
     </main>

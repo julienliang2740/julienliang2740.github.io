@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Reveal } from "@/components/reveal";
+import { SectionHeading } from "@/components/section-heading";
 
 export type TechItem = string | { label: string; crossedOut?: boolean };
 
@@ -112,7 +113,7 @@ function Sheet({
        * the pointer stream, so no swipe ever reached the sheet.
        */
       draggable={false}
-      className="paper paper-lift group block h-full p-4 sm:p-5"
+      className="paper paper-lift group block h-full p-4 sm:p-6"
     >
       {/*
         Only the sheet on top shows its face. The ones behind are blank paper —
@@ -140,19 +141,19 @@ function Sheet({
           width={900}
           height={520}
           draggable={false}
-          className="paper-shot h-[168px] w-full object-cover select-none sm:h-[196px]"
+          className="paper-shot h-[180px] w-full object-cover select-none sm:h-[248px]"
         />
       </div>
       <div className="mt-4 flex flex-1 flex-col">
         <span className="text-[0.68rem] tracking-[0.3em] opacity-40">
           {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
-        <h3 className="mt-1.5 flex items-center gap-2 text-xl font-semibold leading-tight sm:text-2xl">
+        <h3 className="mt-1.5 flex items-center gap-2 text-xl font-semibold leading-tight sm:text-[1.65rem]">
           {project.title}
           <Arrow />
         </h3>
         <div className="paper-rule mt-2 h-px w-12 bg-current/45" />
-        <p className="mt-3 flex-1 text-[0.95rem] leading-relaxed opacity-80">
+        <p className="mt-3 flex-1 text-base leading-relaxed opacity-80">
           {project.description}
         </p>
         <div className="mt-4">
@@ -178,24 +179,13 @@ function Slip({ project }: { project: Project }) {
         <Arrow />
       </h3>
       <div className="paper-rule mt-1.5 h-px w-8 bg-current/45" />
-      <p className="mt-2 flex-1 text-[0.9rem] leading-relaxed opacity-70">
+      <p className="mt-2 flex-1 text-[0.9rem] leading-relaxed opacity-75">
         {project.description}
       </p>
       <div className="mt-3">
         <Chips tech={project.tech} max={3} />
       </div>
     </a>
-  );
-}
-
-function SectionHeading({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <h2 className="text-2xl md:text-3xl font-semibold tracking-[0.22em] uppercase">
-        {children}
-      </h2>
-      <div className="mt-5 border-t border-dashed border-current/40" />
-    </>
   );
 }
 
@@ -242,11 +232,48 @@ function Deck({ projects }: { projects: Project[] }) {
    */
   const drag = useRef({ id: -1, x: 0, y: 0, live: false, dx: 0 });
   const swiped = useRef(false);
+  const deckRef = useRef<HTMLDivElement>(null);
 
   const go = useCallback(
     (d: number) => setActive((a) => Math.min(Math.max(a + d, 0), total - 1)),
     [total],
   );
+
+  /*
+   * A sideways trackpad swipe over the deck moves it, the way a horizontal
+   * scroller would. Bound natively rather than through React's onWheel,
+   * because React attaches wheel listeners passively and a passive listener
+   * cannot preventDefault — without that the browser also scrolls the page
+   * sideways under the gesture.
+   *
+   * A wheel is a stream of events, not one gesture, so a lock holds until the
+   * stream goes quiet: otherwise a single flick runs the whole deck to its end.
+   */
+  useEffect(() => {
+    const el = deckRef.current;
+    if (!el) return;
+    let locked = false;
+    let quiet: ReturnType<typeof setTimeout>;
+    const onWheel = (e: WheelEvent) => {
+      // shiftKey is how a mouse with only a vertical wheel asks to go sideways.
+      const dx = e.shiftKey && e.deltaX === 0 ? e.deltaY : e.deltaX;
+      if (Math.abs(dx) <= Math.abs(e.deltaY) && !e.shiftKey) return; // a plain scroll
+      if (Math.abs(dx) < 2) return;
+      e.preventDefault();
+      clearTimeout(quiet);
+      quiet = setTimeout(() => {
+        locked = false;
+      }, 220);
+      if (locked || Math.abs(dx) < 12) return;
+      locked = true;
+      go(dx > 0 ? 1 : -1);
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      clearTimeout(quiet);
+    };
+  }, [go]);
 
   const onDown = (e: React.PointerEvent) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
@@ -294,7 +321,8 @@ function Deck({ projects }: { projects: Project[] }) {
       }}
     >
       <div
-        className="deck mx-auto h-[404px] w-[calc(100%-2rem)] max-w-[520px] cursor-grab select-none active:cursor-grabbing sm:w-full sm:h-[430px]"
+        ref={deckRef}
+        className="deck mx-auto h-[496px] w-[calc(100%-2rem)] max-w-[620px] cursor-grab select-none active:cursor-grabbing sm:h-[498px] sm:w-full"
         onPointerDown={onDown}
         onPointerMove={onMove}
         onPointerUp={onUp}
@@ -356,7 +384,7 @@ function DeckArrow({
       onClick={onClick}
       disabled={disabled}
       aria-label={dir === 1 ? "Next project" : "Previous project"}
-      className="deck-arrow flex h-9 w-9 items-center justify-center rounded-full border border-current/25"
+      className="deck-arrow flex h-9 w-9 items-center justify-center rounded-full"
     >
       <svg
         className="h-4 w-4"

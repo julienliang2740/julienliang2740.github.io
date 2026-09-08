@@ -5,7 +5,18 @@
 
 :root {
   --background: #ece6da;
-  --foreground: #1a1a1a;
+  /*
+   * Warm near-black rather than neutral #1a1a1a. Sumi ink on warm paper is
+   * never a cold grey, and the neutral version sat on this ground looking
+   * like text pasted onto it from another document.
+   */
+  --foreground: #241f19;
+  --ink-strong: #16120d; /* headings */
+  --ink-soft: #5b5347; /* captions, periods, secondary lines */
+  --rule: rgba(62, 52, 40, 0.2);
+  --rule-strong: rgba(62, 52, 40, 0.42);
+  --selection: rgba(160, 140, 108, 0.32);
+  --portrait-filter: none;
 
   /*
    * Scene art and its ink, as variables so the theme swap is pure CSS. Doing
@@ -59,7 +70,20 @@
      so the art meets the page with no seam — the same reason light uses the
      day paper's colour. */
   --background: #2c3947;
-  --foreground: #f2f5f8;
+  /*
+   * Not #f2f5f8. Near-white body text on a dark ground glares and smears at
+   * small sizes; the page read as a lightbox. Headings keep the brightest
+   * value so the hierarchy still has somewhere to go.
+   */
+  --foreground: #d6dfe9;
+  --ink-strong: #f1f6fb;
+  --ink-soft: #9db0c3;
+  --rule: rgba(214, 223, 233, 0.18);
+  --rule-strong: rgba(214, 223, 233, 0.4);
+  --selection: rgba(140, 170, 205, 0.34);
+  /* The portrait is a daylight photo with a white shirt — a hard bright
+     rectangle on the night page until it is brought down to meet it. */
+  --portrait-filter: brightness(0.88) contrast(1.03) saturate(0.94);
 
   --scene-ink: #eef2f7;
   --scene-ink-muted: #b4c1cd;
@@ -70,15 +94,18 @@
 
   /* Paper after dark is still paper — a sheet a shade lighter than the night
      ground, not a translucent glass panel. */
-  --card-bg: #37455499;
-  --card-bg-hover: #41505fdd;
-  --card-border: rgba(238, 242, 247, 0.14);
-  --card-border-hover: rgba(238, 242, 247, 0.32);
-  --card-shadow: 0 2px 5px -2px rgba(6, 10, 14, 0.5), 0 8px 20px -14px rgba(6, 10, 14, 0.7);
-  --card-shadow-hover: 0 4px 10px -3px rgba(6, 10, 14, 0.55), 0 20px 40px -18px rgba(6, 10, 14, 0.8);
-  --plate-bg: rgba(238, 242, 247, 0.06);
-  --plate-border: rgba(238, 242, 247, 0.16);
-  --paper-grain-opacity: 0.05;
+  /* Opaque, and a clear step lighter than the ground. At 60% alpha these read
+     as glass panels with the page showing through, which is the one thing a
+     sheet of paper never does. */
+  --card-bg: #36424f;
+  --card-bg-hover: #414f5e;
+  --card-border: rgba(214, 223, 233, 0.16);
+  --card-border-hover: rgba(214, 223, 233, 0.34);
+  --card-shadow: 0 2px 6px -2px rgba(6, 10, 14, 0.55), 0 10px 26px -14px rgba(6, 10, 14, 0.8);
+  --card-shadow-hover: 0 4px 12px -3px rgba(6, 10, 14, 0.6), 0 22px 44px -18px rgba(6, 10, 14, 0.9);
+  --plate-bg: rgba(214, 223, 233, 0.07);
+  --plate-border: rgba(214, 223, 233, 0.18);
+  --paper-grain-opacity: 0.04;
   --paper-grain-blend: screen;
 
   --scene-background: url("/scene/night/background.webp");
@@ -365,7 +392,32 @@ body {
  * near-black page. Inverting brings the strokes back as light on dark, and the
  * hue rotation puts the greens and pinks back where they belong afterwards.
  */
-/* Dark mode uses purpose-made night paintings, so nothing is inverted. */
+/*
+ * Dark mode uses purpose-made night paintings, so nothing is inverted — but
+ * they are painted dark, and at the daylight opacities they all but vanished
+ * against the night ground, leaving the page a flat slab. Each layer gets its
+ * own strength after dark rather than one blanket multiplier, because the
+ * mountain sits behind text and the willow does not.
+ */
+.dark .ambient-scene--home .ambient-scene__left {
+  opacity: calc(0.6 * var(--scene-intensity));
+}
+
+.dark .ambient-scene--home .ambient-scene__far {
+  opacity: calc(0.5 * var(--scene-intensity));
+}
+
+.dark .ambient-scene--blog .ambient-scene__left {
+  opacity: calc(0.62 * var(--scene-intensity));
+}
+
+.dark .ambient-scene--blog .ambient-scene__right {
+  opacity: calc(0.58 * var(--scene-intensity));
+}
+
+.dark .ambient-scene--blog .ambient-scene__far {
+  opacity: calc(0.5 * var(--scene-intensity));
+}
 
 /*
  * Phones: vertical offsets in vw, not % or vh. Viewport WIDTH cannot change
@@ -597,6 +649,7 @@ body {
 }
 
 .deck-arrow {
+  border: 1px solid var(--rule-strong);
   transition:
     background-color 300ms ease,
     border-color 300ms ease,
@@ -627,4 +680,63 @@ body {
   .paper-rule {
     transform: scaleX(1);
   }
+}
+
+/* ---- Shared surfaces --------------------------------------------------- */
+
+::selection {
+  background: var(--selection);
+}
+
+/*
+ * Section headings and the intro's structure. Both themes go through the same
+ * tokens so a palette change lands everywhere at once — the previous pass had
+ * the navbar's solid state, the rules and the headings all carrying their own
+ * hard-coded colours, which is why night mode drifted out of step.
+ */
+.section-heading {
+  color: var(--ink-strong);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.rule {
+  border-top: 1px solid var(--rule);
+}
+
+.surface-solid {
+  background: color-mix(in srgb, var(--background) 96%, transparent);
+  border-bottom: 1px solid var(--rule);
+}
+
+.portrait {
+  filter: var(--portrait-filter);
+  border: 1px solid var(--rule-strong);
+  transition: filter 0.3s ease;
+}
+
+/* ---- Experience list --------------------------------------------------- */
+
+.role-row {
+  border-top: 1px solid var(--rule);
+  transition: background-color 300ms ease;
+}
+
+/*
+ * data-first, not :first-child. Every row is wrapped in its own reveal, so each
+ * one is the first child of its wrapper and the whole set lost its separators.
+ */
+.role-row[data-first] {
+  border-top: 0;
+}
+
+@media (hover: hover) {
+  .role-row:hover {
+    background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  }
+}
+
+.role-period {
+  color: var(--ink-soft);
 }
