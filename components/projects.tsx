@@ -18,19 +18,24 @@ export type Project = {
 const label = (t: TechItem) => (typeof t === "string" ? t : t.label);
 const struck = (t: TechItem) => typeof t !== "string" && t.crossedOut;
 
-function Chips({ tech }: { tech: TechItem[] }) {
+function Chips({ tech, max }: { tech: TechItem[]; max?: number }) {
+  const shown = max ? tech.slice(0, max) : tech;
+  const extra = max ? tech.length - shown.length : 0;
   return (
-    <div className="flex flex-wrap gap-2">
-      {tech.map((t, i) => (
+    <div className="flex flex-wrap gap-1.5">
+      {shown.map((t, i) => (
         <span
           key={`${label(t)}-${i}`}
-          className={`rounded-md border border-current/15 bg-current/5 px-2.5 py-0.5 text-sm ${
+          className={`rounded-md border border-current/15 bg-current/5 px-2 py-0.5 text-[0.8rem] ${
             struck(t) ? "line-through decoration-2 decoration-current/70" : ""
           }`}
         >
           {label(t)}
         </span>
       ))}
+      {extra > 0 && (
+        <span className="px-1 py-0.5 text-[0.8rem] opacity-50">+{extra}</span>
+      )}
     </div>
   );
 }
@@ -38,7 +43,7 @@ function Chips({ tech }: { tech: TechItem[] }) {
 function Arrow() {
   return (
     <svg
-      className="inline-block h-[0.7em] w-[0.7em] shrink-0 translate-y-[-0.05em] opacity-0 transition-all duration-200 group-hover:translate-x-1 group-hover:opacity-70"
+      className="inline-block h-[0.7em] w-[0.7em] shrink-0 translate-y-[-0.05em] opacity-30 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-80"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -52,80 +57,64 @@ function Arrow() {
   );
 }
 
-/**
- * A featured project. Image and words sit side by side and swap sides down the
- * column, which keeps three of them from reading as three of the same card —
- * the eye has somewhere new to land each time. Full-width stacked images were
- * the other candidate; three screenshots at that size fought each other and
- * pushed the rest of the page a screen and a half further down.
- */
-function Feature({
-  project,
-  index,
-  flip,
-}: {
-  project: Project;
-  index: number;
-  flip: boolean;
-}) {
+/** A featured project card: image plate on top, words below. */
+function Card({ project, index }: { project: Project; index: number }) {
   return (
     <a
       href={project.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group grid grid-cols-1 items-center gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-10"
+      className="proj-card group flex h-full flex-col overflow-hidden rounded-2xl"
     >
-      <div
-        className={`overflow-hidden rounded-xl border border-current/20 ${
-          flip ? "md:order-2" : ""
-        }`}
-      >
+      <div className="overflow-hidden">
         <Image
           src={project.imageSrc}
           alt={project.imageAlt}
           width={900}
           height={520}
-          className="h-[200px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] md:h-[240px]"
+          className="proj-shot h-[160px] w-full object-cover"
         />
       </div>
-      <div className={flip ? "md:order-1" : ""}>
-        <span className="text-xs tracking-[0.18em] opacity-45">
+      <div className="flex flex-1 flex-col p-5">
+        <span className="text-[0.7rem] tracking-[0.18em] opacity-40">
           {String(index + 1).padStart(2, "0")}
         </span>
-        <h3 className="mt-1 flex items-center gap-1.5 text-xl font-semibold leading-tight md:text-2xl">
+        <h3 className="mt-1 flex items-center gap-1.5 text-lg font-semibold leading-tight">
           {project.title}
           <Arrow />
         </h3>
-        <p className="mt-2 opacity-85">{project.description}</p>
+        <div className="proj-rule mt-2 h-px w-10 bg-current/40" />
+        <p className="mt-2.5 flex-1 text-[0.95rem] leading-relaxed opacity-80">
+          {project.description}
+        </p>
         <div className="mt-4">
-          <Chips tech={project.tech} />
+          <Chips tech={project.tech} max={4} />
         </div>
       </div>
     </a>
   );
 }
 
-/** Everything else: one quiet line each, no images competing for attention. */
-function IndexRow({ project, first }: { project: Project; first: boolean }) {
+/** The rest: little cards, text only, so they read as a quiet second tier. */
+function MiniCard({ project }: { project: Project }) {
   return (
     <a
       href={project.href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group grid grid-cols-1 items-baseline gap-x-6 gap-y-1 py-4 transition-colors hover:bg-current/5 md:grid-cols-[minmax(0,1fr)_auto] ${
-        first ? "" : "border-t border-dashed border-current/25"
-      }`}
+      className="proj-card group flex h-full flex-col rounded-xl p-4"
     >
-      <div className="min-w-0">
-        <h3 className="flex items-center gap-1.5 text-lg font-semibold leading-snug">
-          {project.title}
-          <Arrow />
-        </h3>
-        <p className="mt-0.5 text-base opacity-70">{project.description}</p>
+      <h3 className="flex items-center gap-1.5 text-base font-semibold leading-snug">
+        {project.title}
+        <Arrow />
+      </h3>
+      <div className="proj-rule mt-1.5 h-px w-8 bg-current/40" />
+      <p className="mt-2 flex-1 text-[0.9rem] leading-relaxed opacity-70">
+        {project.description}
+      </p>
+      <div className="mt-3">
+        <Chips tech={project.tech} max={3} />
       </div>
-      <span className="text-sm opacity-55 md:text-right">
-        {project.tech.map(label).join(" · ")}
-      </span>
     </a>
   );
 }
@@ -141,6 +130,15 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
   );
 }
 
+/*
+ * Every card glides in from the same side rather than simply fading up, and
+ * they overlap heavily — a 70ms step reads as one gesture unrolling, the way a
+ * handscroll opens, where a longer stagger reads as the page still loading.
+ * A purely vertical rise of a few pixels didn't read as movement at all.
+ */
+const STEP = 70;
+const SHIFT = "34px";
+
 export function Projects({ projects }: { projects: Project[] }) {
   const featured = projects.filter((p) => p.featured);
   const rest = projects.filter((p) => !p.featured);
@@ -149,25 +147,37 @@ export function Projects({ projects }: { projects: Project[] }) {
     <>
       <section className="pt-8">
         <Reveal>
-          <SectionHeading>Selected Work</SectionHeading>
+          <SectionHeading>Projects</SectionHeading>
         </Reveal>
-        <div className="mt-8 space-y-12 md:space-y-14">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 md:grid-cols-3">
           {featured.map((p, i) => (
-            <Reveal key={p.title}>
-              <Feature project={p} index={i} flip={i % 2 === 1} />
+            <Reveal
+              key={p.title}
+              delay={i * STEP}
+              shift={SHIFT}
+              rise="14px"
+              className="h-full"
+            >
+              <Card project={p} index={i} />
             </Reveal>
           ))}
         </div>
       </section>
 
-      <section className="pt-16">
+      <section className="pt-14">
         <Reveal>
           <SectionHeading>Also Built</SectionHeading>
         </Reveal>
-        <div className="mt-2">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {rest.map((p, i) => (
-            <Reveal key={p.title}>
-              <IndexRow project={p} first={i === 0} />
+            <Reveal
+              key={p.title}
+              delay={i * 45}
+              shift="22px"
+              rise="12px"
+              className="h-full"
+            >
+              <MiniCard project={p} />
             </Reveal>
           ))}
         </div>

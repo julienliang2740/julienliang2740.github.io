@@ -82,10 +82,16 @@ function watch(check: Check) {
 export function Reveal({
   children,
   delay = 0,
+  shift,
+  rise,
   className = "",
 }: {
   children: React.ReactNode;
   delay?: number;
+  /** Horizontal distance to travel in, e.g. "-40px". Vertical by default. */
+  shift?: string;
+  /** Vertical distance to travel in. Defaults to the stylesheet's 18px. */
+  rise?: string;
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -125,7 +131,11 @@ export function Reveal({
       className={`reveal ${className}`}
       data-shown={state !== "hidden" ? "" : undefined}
       data-instant={state === "instant" ? "" : undefined}
-      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+      style={{
+        ...(delay ? { transitionDelay: `${delay}ms` } : null),
+        ...(shift ? ({ "--reveal-shift": shift } as React.CSSProperties) : null),
+        ...(rise ? ({ "--reveal-rise": rise } as React.CSSProperties) : null),
+      }}
     >
       {children}
     </div>

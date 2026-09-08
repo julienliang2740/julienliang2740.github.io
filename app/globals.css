@@ -28,6 +28,16 @@
   --scene-tree: url("/scene/tree.webp");
   --scene-bank: url("/scene/foreground_bank_clean.webp");
 
+  /* Project cards: a leaf of paper laid on the scroll, not a UI panel. Warm
+     and barely lighter than the page, with a hairline that only darkens under
+     the cursor. */
+  --card-bg: rgba(250, 246, 238, 0.66);
+  --card-bg-hover: rgba(252, 249, 243, 0.9);
+  --card-border: rgba(62, 52, 40, 0.16);
+  --card-border-hover: rgba(62, 52, 40, 0.34);
+  --card-shadow: 0 1px 2px rgba(62, 52, 40, 0.05);
+  --card-shadow-hover: 0 16px 34px -14px rgba(62, 52, 40, 0.32);
+
   --blog-willow: url("/scene/blog/willow.webp");
   --blog-blossom: url("/scene/blog/blossom.webp");
   --blog-mountain: url("/scene/blog/mountain.webp");
@@ -53,6 +63,13 @@
     drop-shadow(0 0 7px rgba(20, 28, 36, 0.75));
   --scene-cta-hover: #3d4d5e;
   --scene-cta-shadow: rgba(6, 10, 14, 0.35);
+
+  --card-bg: rgba(58, 73, 89, 0.5);
+  --card-bg-hover: rgba(66, 83, 101, 0.72);
+  --card-border: rgba(238, 242, 247, 0.14);
+  --card-border-hover: rgba(238, 242, 247, 0.32);
+  --card-shadow: 0 1px 2px rgba(6, 10, 14, 0.3);
+  --card-shadow-hover: 0 16px 34px -14px rgba(6, 10, 14, 0.6);
 
   --scene-background: url("/scene/night/background.webp");
   --scene-moon: url("/scene/night/moon.webp");
@@ -402,7 +419,7 @@ body {
  */
 .reveal-ready .reveal {
   opacity: 0;
-  transform: translateY(var(--reveal-rise, 18px));
+  transform: translate3d(var(--reveal-shift, 0px), var(--reveal-rise, 18px), 0);
   transition:
     opacity var(--reveal-duration, 700ms) cubic-bezier(0.16, 0.7, 0.3, 1),
     transform var(--reveal-duration, 700ms) cubic-bezier(0.16, 0.7, 0.3, 1);
@@ -423,5 +440,68 @@ body {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* ---- Project cards ------------------------------------------------------ */
+
+/*
+ * A card is a leaf of paper set on the scroll. Everything about the resting
+ * state is quiet — the lift, the darker hairline and the warmer paper only
+ * arrive under the cursor, so a screen of them reads as one calm block rather
+ * than eight things shouting.
+ */
+.proj-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  transition:
+    transform 420ms cubic-bezier(0.16, 0.7, 0.3, 1),
+    box-shadow 420ms cubic-bezier(0.16, 0.7, 0.3, 1),
+    border-color 420ms ease,
+    background-color 420ms ease;
+}
+
+@media (hover: hover) {
+  .proj-card:hover {
+    transform: translateY(-6px);
+    background: var(--card-bg-hover);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .proj-card:hover .proj-shot {
+    transform: scale(1.05);
+  }
+
+  /* The rule under the title draws itself across as the card comes alive. */
+  .proj-card:hover .proj-rule {
+    transform: scaleX(1);
+  }
+}
+
+.proj-card:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--foreground) 55%, transparent);
+  outline-offset: 3px;
+}
+
+.proj-shot {
+  transition: transform 620ms cubic-bezier(0.16, 0.7, 0.3, 1);
+}
+
+.proj-rule {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 480ms cubic-bezier(0.16, 0.7, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proj-card,
+  .proj-shot,
+  .proj-rule {
+    transition: none;
+  }
+  .proj-rule {
+    transform: scaleX(1);
   }
 }
