@@ -238,42 +238,82 @@ function Deck({ projects }: { projects: Project[] }) {
     (d: number) => setActive((a) => Math.min(Math.max(a + d, 0), total - 1)),
     [total],
   );
+  const atStart = active === 0;
+  const atEnd = active === total - 1;
 
   /*
-   * A sideways trackpad swipe over the deck moves it, the way a horizontal
-   * scroller would. Bound natively rather than through React's onWheel,
-   * because React attaches wheel listeners passively and a passive listener
-   * cannot preventDefault — without that the browser also scrolls the page
-   * sideways under the gesture.
+   * A sideways trackpad swipe over the deck moves it, and the sheet tracks the
+   * gesture as it goes rather than snapping when some threshold trips.
    *
-   * A wheel is a stream of events, not one gesture, so a lock holds until the
-   * stream goes quiet: otherwise a single flick runs the whole deck to its end.
+   * Bound natively rather than through React's onWheel, because React attaches
+   * wheel listeners passively and a passive listener cannot preventDefault —
+   * without that the browser also scrolls the page sideways under the gesture.
+   *
+   * The hard part is momentum. One flick is a short burst followed by a tail of
+   * decaying events that can run for over a second, and the first version
+   * treated that tail as more input: a single flick advanced two sheets, and
+   * because its "wait for the stream to go quiet" lock was reset by every one
+   * of those tail events, the deck then sat unresponsive until the tail died.
+   *
+   * So a gesture commits once and then disarms, and the whole tail is swallowed
+   * however long it runs. Re-arming needs positive evidence of a new gesture: a
+   * gap in the stream, or a delta bigger than the one before it, which momentum
+   * — monotonically decaying — never produces. A sustained push that never
+   * decays re-arms on its own after half a second so it keeps advancing.
    */
   useEffect(() => {
     const el = deckRef.current;
     if (!el) return;
-    let locked = false;
-    let quiet: ReturnType<typeof setTimeout>;
+    const COMMIT = 90; // px of travel that counts as a sheet
+    let acc = 0;
+    let armed = true;
+    let lastDelta = 0;
+    let lastAt = 0;
+    let disarmedAt = 0;
+    let settle: ReturnType<typeof setTimeout>;
+
     const onWheel = (e: WheelEvent) => {
       // shiftKey is how a mouse with only a vertical wheel asks to go sideways.
       const dx = e.shiftKey && e.deltaX === 0 ? e.deltaY : e.deltaX;
-      if (Math.abs(dx) <= Math.abs(e.deltaY) && !e.shiftKey) return; // a plain scroll
-      if (Math.abs(dx) < 2) return;
+      if (!e.shiftKey && Math.abs(dx) <= Math.abs(e.deltaY)) return; // a plain scroll
+      if (Math.abs(dx) < 1) return;
       e.preventDefault();
-      clearTimeout(quiet);
-      quiet = setTimeout(() => {
-        locked = false;
-      }, 220);
-      if (locked || Math.abs(dx) < 12) return;
-      locked = true;
-      go(dx > 0 ? 1 : -1);
+
+      const now = e.timeStamp;
+      if (
+        now - lastAt > 120 || // the stream stopped and started again
+        (!armed && Math.abs(dx) > Math.abs(lastDelta) + 1.5) || // a fresh push
+        (!armed && now - disarmedAt > 500 && Math.abs(dx) >= 6) // still pushing
+      ) {
+        armed = true;
+        acc = 0;
+      }
+      lastDelta = dx;
+      lastAt = now;
+      if (!armed) return; // swallowing the tail of a gesture already spent
+
+      acc += dx;
+      const end = (acc > 0 && atEnd) || (acc < 0 && atStart);
+      setOffset(-(end ? acc * 0.25 : acc));
+
+      clearTimeout(settle);
+      settle = setTimeout(() => setOffset(0), 140);
+
+      if (Math.abs(acc) >= COMMIT && !end) {
+        go(acc > 0 ? 1 : -1);
+        acc = 0;
+        armed = false;
+        disarmedAt = now;
+        setOffset(0);
+      }
     };
+
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => {
       el.removeEventListener("wheel", onWheel);
-      clearTimeout(quiet);
+      clearTimeout(settle);
     };
-  }, [go]);
+  }, [go, atStart, atEnd]);
 
   const onDown = (e: React.PointerEvent) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
@@ -296,7 +336,7 @@ function Deck({ projects }: { projects: Project[] }) {
       e.currentTarget.setPointerCapture(e.pointerId);
     }
     // Resist past either end, so the deck feels bounded rather than broken.
-    const past = (dx < 0 && active === total - 1) || (dx > 0 && active === 0);
+    const past = (dx < 0 && atEnd) || (dx > 0 && atStart);
     d.dx = past ? dx * 0.25 : dx;
     setOffset(d.dx);
   };
@@ -349,7 +389,7 @@ function Deck({ projects }: { projects: Project[] }) {
       </div>
 
       <div className="mt-7 flex items-center justify-center gap-5">
-        <DeckArrow dir={-1} disabled={active === 0} onClick={() => go(-1)} />
+        <DeckArrow dir={-1} disabled={atStart} onClick={() => go(-1)} />
         <div className="flex items-center gap-2">
           {projects.map((p, i) => (
             <button
@@ -363,7 +403,7 @@ function Deck({ projects }: { projects: Project[] }) {
             />
           ))}
         </div>
-        <DeckArrow dir={1} disabled={active === total - 1} onClick={() => go(1)} />
+        <DeckArrow dir={1} disabled={atEnd} onClick={() => go(1)} />
       </div>
     </div>
   );
