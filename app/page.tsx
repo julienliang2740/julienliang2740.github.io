@@ -16,29 +16,33 @@ const profile: Profile = {
   lead: [
     <>
       I&apos;m a <strong>Computer Science</strong> student at the University of
-      Waterloo building software for startups, enterprise-scale applications,
+      Waterloo building software for startups, large enterprises,
       and everything in between.
     </>,
     <>
-      I am currently a software engineer at <strong>Cloudflare</strong> building
-      gateway filtering and routing for MCPs, WARP, and more.
-    </>,
-  ],
-  aside: (
+      I&apos;ve built systems for many projects and teams, most of which focus on backend systems, infrastructure, and applied AI.
+    </>,  
     <>
-      Beyond software, I&apos;m deeply passionate about history. I&apos;ve read
-      everything from recent works such as{" "}
-      <em>1587, a Year of No Significance</em> to 12th-century writings like{" "}
-      <em>Ten Essays on Defence</em>.
+      Beyond coding, I&apos;m deeply passionate about history. I&apos;m currently reading {" "}
+      <em>1587, a Year of No Significance</em> and {" "}
+      <em>The Aeneid</em>.
     </>
-  ),
+  ],
+  // aside: (
+  //   <>
+  //     Beyond software, I&apos;m deeply passionate about history. I&apos;ve read
+  //     everything from recent works such as{" "}
+  //     <em>1587, a Year of No Significance</em> to 12th-century writings like{" "}
+  //     <em>Ten Essays on Defence</em>.
+  //   </>
+  // ),
 };
 
 const experience: Role[] = [
   { org: "Cloudflare", title: "SWE, Gateway Routing and Filtering", period: "Summer 2026" },
   { org: "Cisco", title: "SWE, IOS XR Simulation Platforms + Agentic Services", period: "Summer 2025" },
   { org: "Ford", title: "SWE, IPC/HMI", period: "Winter 2025" },
-  { org: "Blackberry QNX", title: "SWE, RTOS File System", period: "Summer 2024" },
+  { org: "BlackBerry QNX", title: "SWE, RTOS File System", period: "Summer 2024" },
 ];
 
 const projects: Project[] = [
@@ -158,8 +162,7 @@ export default function Home() {
           <Reveal>
             <p className="pt-14 text-lg leading-relaxed">
               If any of this seems interesting, feel free to reach out via
-              LinkedIn or email (jh2liang@uwaterloo.ca) &mdash; I&apos;d love to
-              chat!
+              LinkedIn or email (jh2liang@uwaterloo.ca)
             </p>
           </Reveal>
         </div>
