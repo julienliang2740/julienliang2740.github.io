@@ -68,7 +68,7 @@ const projects: Project[] = [
     title: "Antegensim",
     featured: true,
     description:
-      "A realistic artificial-life world of LLM agents: each sees only its surroundings, pays energy for every thought, and can die.",
+      "An artificial life simulation that fosters the emergence of complex behavior through finite resources and physical constraints.",
     href: "https://github.com/julienliang2740/antegensim",
     imageSrc: "/antegensim.png",
     imageAlt: "Antegensim project preview",
