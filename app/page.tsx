@@ -65,8 +65,17 @@ const projects: Project[] = [
     ],
   },
   {
-    title: "Remy",
+    title: "Antegensim",
     featured: true,
+    description:
+      "A realistic artificial-life world of LLM agents: each sees only its surroundings, pays energy for every thought, and can die.",
+    href: "https://github.com/julienliang2740/antegensim",
+    imageSrc: "/antegensim.png",
+    imageAlt: "Antegensim project preview",
+    tech: ["Python", "FastAPI", "React", "TypeScript"],
+  },
+  {
+    title: "Remy",
     description:
       "An AI kitchen coach that takes you from random ingredients in the fridge to simple meals and grocery savings.",
     href: "https://github.com/julienliang2740/remy-agent-layer",
